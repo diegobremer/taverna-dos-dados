@@ -8,58 +8,71 @@
 <style>
 :root{--parch:#f2e4c4;--parch2:#ddc99a;--parch3:#c4a96a;--red:#8b1a1a;--red2:#c0392b;--gold:#b8860b;--gold2:#d4a017;--gold3:#f0c040;--bg:#0e0a04;--panel:#1f1609;--panel2:#2a1e0c;--border:#5a3e18;}
 *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
-body{font-family:'Crimson Text',Georgia,serif;background:var(--bg);color:var(--parch);min-height:100vh;background-image:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(139,26,26,.12) 0%,transparent 60%),repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px);}
-header{text-align:center;padding:3rem 1rem 1.5rem;border-bottom:1px solid var(--border)}
-.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,4vw,2.8rem);color:var(--gold3);text-shadow:0 0 40px rgba(212,160,23,.5);}
+body{font-family:'Crimson Text',Georgia,serif;background:var(--bg);color:var(--parch);min-height:100vh;background-image:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(139,26,26,.12) 0%,transparent 60%),repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px);}
+header{text-align:center;padding:3rem 1rem 1.5rem;position:relative;border-bottom:1px solid var(--border)}
+.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,4vw,2.8rem);font-weight:900;color:var(--gold3);text-shadow:0 0 40px rgba(212,160,23,.5);line-height:1.15}
+.h-sub{font-family:'Cinzel',serif;font-size:.8rem;color:var(--parch3);letter-spacing:.35em;text-transform:uppercase;margin-top:.6rem}
+
 .info-bar{display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:.55rem 1rem;border-bottom:1px solid rgba(90,62,24,.3)}
-.status-dot{width:8px;height:8px;border-radius:50%;background:#e74c3c;}
-.status-dot.online{background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.6)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.6)}
+.status-txt{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--parch3)}
+
 .wrap{max-width:1000px;margin:0 auto;padding:2rem 1.2rem 4rem}
 .panel{background:linear-gradient(160deg,var(--panel2) 0%,var(--panel) 100%);border:1px solid var(--border);padding:1.6rem;position:relative;margin-bottom:1.8rem}
-.panel-title{font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.3rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);display:flex;align-items:center;}
+.panel-title{font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;color:var(--gold2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.3rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);display:flex;align-items:center;}
 
-/* AJUSTE DOS CAMPOS DE INPUT */
-.fields-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;max-width:800px;margin-left:auto;}
-.field-group{display:flex;flex-direction:column;gap:.5rem}
-.field-label{font-family:'Cinzel',serif;font-size:.72rem;color:var(--parch3);text-align:left}
-.txt-input{background:rgba(0,0,0,.5);border:1px solid var(--border);color:var(--parch);padding:.7rem;outline:none;}
+/* CAMPOS DE INPUT ALINHADOS À DIREITA */
+.fields-row{display:grid;grid-template-columns:1fr;gap:.8rem;margin-bottom:1.2rem;max-width:400px;margin-left:auto;}
+.field-group{display:flex;flex-direction:column;gap:.3rem}
+.field-label{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3);text-align:left}
+.txt-input{width:100%;background:rgba(0,0,0,.5);border:1px solid var(--border);color:var(--parch);font-family:'Crimson Text',serif;font-size:1.1rem;padding:.5rem .8rem;outline:none;}
 
-/* GRADE DE ATRIBUTOS (COMO NO PRINT) */
-.attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:800px;margin:2rem auto;}
-.attr-card{background:rgba(0,0,0,.35);border:1px solid var(--border);padding:1rem;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;}
-.attr-name{font-family:'Cinzel',serif;font-size:.7rem;color:var(--parch3);text-transform:uppercase;margin-bottom:0.5rem}
-.attr-val{font-family:'Cinzel Decorative',serif;font-size:2rem;color:var(--gold3);}
-.attr-dice{font-size:.7rem;color:rgba(194,169,106,.4);margin-top:5px}
+/* GRADE DE ATRIBUTOS */
+.attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem;max-width:800px;margin:2rem auto;}
+.attr-card{background:rgba(0,0,0,.35);border:1px solid var(--border);padding:.75rem .6rem .6rem;text-align:center;}
+.attr-name{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--parch3);display:block;margin-bottom:.4rem}
+.attr-val{font-family:'Cinzel Decorative',serif;font-size:2.2rem;font-weight:900;color:var(--gold3);line-height:1;display:block;min-height:2.5rem}
+.attr-dice{font-size:.72rem;color:rgba(194,169,106,.4);margin-top:.25rem;font-style:italic}
 
-.roll-btn{width:100%;background:var(--red);border:1px solid #7a1515;color:var(--parch);font-family:'Cinzel',serif;padding:1rem;cursor:pointer;font-weight:bold;text-transform:uppercase;}
-.roll-btn:disabled{opacity:.5}
+.roll-btn{width:100%;background:linear-gradient(180deg,#a52020 0%,var(--red) 100%);border:1px solid #7a1515;color:var(--parch);font-family:'Cinzel',serif;font-size:1rem;font-weight:700;padding:.85rem;cursor:pointer;text-transform:uppercase;box-shadow:0 3px 15px rgba(139,26,26,.5);}
 
-/* HISTÓRICO */
-.log-entry{background:rgba(0,0,0,.3);border:1px solid rgba(90,62,24,.4);padding:1rem;margin-bottom:1rem;position:relative;}
-.del-btn{position:absolute;top:10px;right:10px;background:none;border:1px solid rgba(139,26,26,.5);color:var(--red2);cursor:pointer;font-weight:bold;padding:2px 6px;}
-.log-attrs{display:flex;flex-wrap:wrap;gap:.5rem;margin:0.5rem 0}
-.log-attr{background:rgba(0,0,0,.3);border:1px solid var(--border);padding:4px 8px;font-size:0.8rem}
-.log-attr b{color:var(--gold2)}
+/* CRÔNICA - ESTILO QUE VOCÊ PEDIU */
+.log-list{display:flex;flex-direction:column;gap:.6rem;}
+.log-entry{background:rgba(0,0,0,.3);border:1px solid rgba(90,62,24,.4);padding:.75rem 1rem;position:relative;}
+.log-header{display:flex;justify-content:space-between;align-items:baseline;padding-right:30px}
+.log-char{font-family:'Cinzel',serif;font-size:.92rem;font-weight:700;color:var(--gold3);text-transform:uppercase;} /* Aventureiro em Maiúsculo e Negrito */
+.log-player{font-size:.8rem;color:var(--parch3);margin-bottom:.4rem;font-style:italic} /* Ícone de Player abaixo */
+.log-time{font-size:.7rem;color:rgba(194,169,106,.35)}
+.log-attrs{display:flex;flex-wrap:wrap;gap:.4rem;margin:0.5rem 0}
+.log-attr{background:rgba(0,0,0,.3);border:1px solid var(--border);padding:.15rem .45rem;font-size:.78rem}
+.log-attr b{color:var(--gold2);font-family:'Cinzel',serif}
+
+/* BOTÃO DE APAGAR (X) */
+.del-btn{position:absolute;top:10px;right:10px;background:none;border:1px solid rgba(139,26,26,.3);color:rgba(139,26,26,.6);font-size:.8rem;cursor:pointer;padding:0 5px;border-radius:2px;font-weight:bold;}
+.del-btn:hover{color:var(--red2);border-color:var(--red2)}
+
+.clear-btn{margin-left:auto;background:none;border:1px solid rgba(194,169,106,.2);color:rgba(194,169,106,.4);font-size:.82rem;padding:2px 10px;cursor:pointer}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:1000;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:100;}
 .modal-overlay.open{display:flex;}
-.modal{background:var(--panel2);border:1px solid var(--gold2);padding:2rem;max-width:500px;width:90%;position:relative;}
-.modal-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--parch);font-size:1.5rem;cursor:pointer;}
+.modal{background:linear-gradient(160deg,#2e200a 0%,#1a1208 100%);border:1px solid var(--gold2);padding:2rem;max-width:520px;width:100%;position:relative;}
+.modal-close{position:absolute;top:.8rem;right:.8rem;background:none;border:1px solid rgba(194,169,106,.25);color:var(--parch3);cursor:pointer;width:28px;height:28px;}
 </style>
 </head>
 <body>
 
 <header>
   <div class="h-title">Taverna dos Dados</div>
+  <div class="h-sub">AD&amp;D 2ª Edição · Geração de Atributos · 3d6</div>
 </header>
 
 <div class="info-bar">
-  <div class="status-wrap" style="display:flex; align-items:center; gap:10px">
-    <div class="status-dot online" id="statusDot"></div>
-    <span class="status-txt" id="statusTxt">CONECTADO</span>
+  <div class="status-wrap" style="display:flex; align-items:center; gap:.45rem">
+    <div class="status-dot"></div>
+    <span class="status-txt">CONECTADO — TEMPO REAL</span>
   </div>
-  <div style="font-size:0.7rem">ÚLTIMA ATUALIZAÇÃO: <span id="lastUpdate">—</span></div>
+  <div style="font-family:'Cinzel',serif; font-size:.7rem; color:rgba(194,169,106,.45)">ÚLTIMA ATUALIZAÇÃO: <span id="lastUpdate">—</span></div>
 </div>
 
 <div class="wrap">
@@ -78,12 +91,12 @@ header{text-align:center;padding:3rem 1rem 1.5rem;border-bottom:1px solid var(--
     </div>
 
     <div class="attr-grid">
-      <div></div>
+      <div style="visibility:hidden"></div>
       <div class="attr-card"><span class="attr-name">Força</span><span class="attr-val" id="val-for">—</span><div class="attr-dice" id="dice-for"></div></div>
-      <div></div>
+      <div style="visibility:hidden"></div>
       
       <div class="attr-card"><span class="attr-name">Destreza</span><span class="attr-val" id="val-dex">—</span><div class="attr-dice" id="dice-dex"></div></div>
-      <div style="display:flex; align-items:center; justify-content:center; color:rgba(184,134,11,.1); font-size:4rem">⚔</div>
+      <div style="display:flex; align-items:center; justify-content:center; color:rgba(184,134,11,.05); font-size:4rem">⚔</div>
       <div class="attr-card"><span class="attr-name">Constituição</span><span class="attr-val" id="val-con">—</span><div class="attr-dice" id="dice-con"></div></div>
       
       <div class="attr-card"><span class="attr-name">Inteligência</span><span class="attr-val" id="val-int">—</span><div class="attr-dice" id="dice-int"></div></div>
@@ -100,8 +113,8 @@ header{text-align:center;padding:3rem 1rem 1.5rem;border-bottom:1px solid var(--
   </div>
 
   <div class="panel">
-    <div class="panel-title">📜 CRÔNICA DOS AVENTUREIROS <button class="clear-btn" id="clearBtn" style="margin-left:auto; color:var(--red2); background:none; border:none; cursor:pointer">LIMPAR TUDO</button></div>
-    <div id="logList"></div>
+    <div class="panel-title">📜 CRÔNICA DOS AVENTUREIROS <button class="clear-btn" id="clearBtn">Limpar Tudo</button></div>
+    <div class="log-list" id="logList"></div>
   </div>
 </div>
 
@@ -122,22 +135,10 @@ const db=getFirestore(app);
 const rollsRef=collection(db,"rolls");
 const MASTER_KEY = "LucasNoob";
 
-// RAÇAS
-const RACES=[
-  {name:'Humano', icon:'👤', adjusts:null, reqs:{for:[3,18],dex:[3,18],con:[3,18],int:[3,18],sab:[3,18],car:[3,18]}},
-  {name:'Anão', icon:'⛏️', adjusts:{con:1,car:-1}, reqs:{for:[8,18],dex:[3,17],con:[11,18],int:[3,18],sab:[3,18],car:[3,17]}},
-  {name:'Elfo', icon:'🏹', adjusts:{dex:1,con:-1}, reqs:{for:[3,18],dex:[6,18],con:[7,18],int:[8,18],sab:[3,18],car:[8,18]}},
-  {name:'Gnomo', icon:'🔮', adjusts:{int:1,sab:-1}, reqs:{for:[6,18],dex:[3,18],con:[8,18],int:[6,18],sab:[3,18],car:[3,18]}},
-  {name:'Halfling', icon:'🍃', adjusts:{dex:1,for:-1}, reqs:{for:[7,18],dex:[7,18],con:[10,18],int:[6,18],sab:[3,17],car:[3,18]}}
-];
-
 const ATTR_KEYS=['for','dex','con','int','sab','car'];
-const ATTR_NAMES={for:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',sab:'Sabedoria',car:'Carisma'};
+const ATTR_NAMES={for:'For',dex:'Dex',con:'Con',int:'Int',sab:'Sab',car:'Car'};
 
-// FUNÇÕES
-const d6=()=>Math.floor(Math.random()*6)+1;
-const roll3d6=()=>{const d=[d6(),d6(),d6()]; return{total:d.reduce((a,b)=>a+b,0), dice:d};};
-
+// FUNÇÕES GLOBAIS
 window.excluirAventureiro = async (id) => {
   const s = prompt('🔐 Senha do Mestre:');
   if(s === MASTER_KEY) {
@@ -152,17 +153,22 @@ onSnapshot(query(rollsRef, orderBy('ts','desc')), (snap) => {
   snap.forEach(d => {
     const data = d.data();
     const div = document.createElement('div'); div.className = 'log-entry';
+    const attrHtml = ATTR_KEYS.map(k=>`<span class="log-attr"><span>${ATTR_NAMES[k]}</span> <b>${data.attrs[k]}</b></span>`).join('');
     div.innerHTML = `
       <button class="del-btn" onclick="excluirAventureiro('${d.id}')">✕</button>
-      <b>⚔ ${data.charName}</b> (Jogador: ${data.playerName})<br>
-      <div class="log-attrs">${ATTR_KEYS.map(k=>`<span class="log-attr">${k.toUpperCase()}: <b>${data.attrs[k]}</b></span>`).join('')}</div>
+      <div class="log-header"><span class="log-char">⚔ ${data.charName}</span><span class="log-time">${new Date(data.ts).toLocaleTimeString()}</span></div>
+      <div class="log-player">👤 Jogador: ${data.playerName}</div>
+      <div class="log-attrs">${attrHtml}</div>
     `;
     list.appendChild(div);
   });
   document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
 });
 
-// BOTÃO ROLL
+// LOGICA DE ROLAGEM
+const d6=()=>Math.floor(Math.random()*6)+1;
+const roll3d6=()=>{const d=[d6(),d6(),d6()]; return{total:d.reduce((a,b)=>a+b,0), dice:d};};
+
 document.getElementById('rollBtn').addEventListener('click', async () => {
   const p = document.getElementById('playerName').value.trim();
   const c = document.getElementById('charName').value.trim();
@@ -173,7 +179,8 @@ document.getElementById('rollBtn').addEventListener('click', async () => {
 
   ATTR_KEYS.forEach(k => {
     document.getElementById('val-'+k).textContent = rolls[k];
-    document.getElementById('dice-'+k).textContent = `[${dd[k].join('+')}]`;
+    document.getElementById('dice-'+k).textContent = `[${dd[k].join(' + ')}]`;
+    document.getElementById('val-'+k).parentElement.classList.add('rolled');
   });
 
   await addDoc(rollsRef, {playerName:p, charName:c, attrs:rolls, ts:Date.now()});
