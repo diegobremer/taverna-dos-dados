@@ -6,157 +6,117 @@
 <title>⚔ AD&D 2ª Ed — Taverna dos Dados</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
 <style>
-:root {
-  --parch: #f2e4c4;
-  --parch2: #ddc99a;
-  --parch3: #c4a96a;
-  --ink: #1c1108;
-  --red: #8b1a1a;
-  --red2: #c0392b;
-  --gold: #b8860b;
-  --gold2: #d4a017;
-  --gold3: #f0c040;
-  --bg: #0e0a04;
-  --bg2: #1a1208;
-  --panel: #1f1609;
-  --panel2: #2a1e0c;
-  --border: #5a3e18;
-  --border2: #8b6020;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body {
-  font-family: 'Crimson Text', Georgia, serif;
-  background: var(--bg);
-  color: var(--parch);
-  min-height: 100vh;
-  background-image:
-    radial-gradient(ellipse 80% 40% at 50% 0%, rgba(139,26,26,0.12) 0%, transparent 60%),
-    radial-gradient(ellipse 60% 60% at 80% 80%, rgba(184,134,11,0.06) 0%, transparent 60%),
-    repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(90,62,24,0.07) 60px),
-    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(90,62,24,0.07) 60px);
-}
-
-/* HEADER */
-header { text-align: center; padding: 3rem 1rem 2rem; position: relative; border-bottom: 1px solid var(--border); }
-header::before { content:''; position:absolute; inset:0; background:linear-gradient(180deg,rgba(139,26,26,0.08) 0%,transparent 100%); pointer-events:none; }
-.h-ornament { color:var(--gold2); font-size:1.4rem; letter-spacing:1rem; display:block; margin-bottom:0.5rem; opacity:0.6; }
-.h-title { font-family:'Cinzel Decorative',serif; font-size:clamp(1.6rem,4vw,2.8rem); font-weight:900; color:var(--gold3); text-shadow:0 0 40px rgba(212,160,23,0.5),0 2px 6px rgba(0,0,0,0.9); line-height:1.15; }
-.h-sub { font-family:'Cinzel',serif; font-size:0.8rem; color:var(--parch3); letter-spacing:0.35em; text-transform:uppercase; margin-top:0.6rem; }
-.h-rule { width:300px; max-width:80%; height:1px; background:linear-gradient(90deg,transparent,var(--gold2),transparent); margin:1.2rem auto 0; }
-
-/* STATUS BADGE */
-.status-bar { display:flex; align-items:center; justify-content:center; gap:0.5rem; padding:0.5rem; font-family:'Cinzel',serif; font-size:0.72rem; letter-spacing:0.1em; }
-.status-dot { width:8px; height:8px; border-radius:50%; background:#4ade80; box-shadow:0 0 8px rgba(74,222,128,0.6); }
-.status-dot.offline { background:#e74c3c; box-shadow:0 0 8px rgba(231,76,60,0.6); }
-.status-dot.connecting { background:var(--gold2); box-shadow:0 0 8px rgba(212,160,23,0.6); animation:pulse 1s infinite; }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-
-/* LAYOUT */
-.wrap { max-width:1000px; margin:0 auto; padding:2rem 1.2rem 4rem; }
-
-/* PANELS */
-.panel { background:linear-gradient(160deg,var(--panel2) 0%,var(--panel) 100%); border:1px solid var(--border); border-radius:2px; padding:1.6rem; position:relative; box-shadow:0 6px 30px rgba(0,0,0,0.6),inset 0 1px 0 rgba(212,160,23,0.08); margin-bottom:1.8rem; }
-.panel::after { content:''; position:absolute; top:4px; left:4px; right:4px; bottom:4px; border:1px solid rgba(184,134,11,0.1); border-radius:1px; pointer-events:none; }
-.corner { position:absolute; width:16px; height:16px; border-color:var(--gold2); border-style:solid; opacity:0.5; }
-.corner-tl { top:6px; left:6px; border-width:1px 0 0 1px; }
-.corner-tr { top:6px; right:6px; border-width:1px 1px 0 0; }
-.corner-bl { bottom:6px; left:6px; border-width:0 0 1px 1px; }
-.corner-br { bottom:6px; right:6px; border-width:0 1px 1px 0; }
-.panel-title { font-family:'Cinzel',serif; font-size:0.9rem; font-weight:700; color:var(--gold2); letter-spacing:0.2em; text-transform:uppercase; margin-bottom:1.3rem; padding-bottom:0.6rem; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:0.5rem; }
-
-/* INPUT */
-.field-label { font-family:'Cinzel',serif; font-size:0.75rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--parch3); display:block; margin-bottom:0.35rem; }
-.name-input { width:100%; background:rgba(0,0,0,0.5); border:1px solid var(--border); border-radius:2px; color:var(--parch); font-family:'Crimson Text',serif; font-size:1.15rem; padding:0.55rem 0.85rem; outline:none; transition:border-color 0.2s,box-shadow 0.2s; margin-bottom:1.2rem; }
-.name-input:focus { border-color:var(--gold2); box-shadow:0 0 12px rgba(212,160,23,0.2); }
-.name-input::placeholder { color:rgba(194,169,106,0.3); }
-
-/* ROLL BUTTON */
-.roll-btn { width:100%; background:linear-gradient(180deg,#a52020 0%,var(--red) 100%); border:1px solid #7a1515; border-radius:2px; color:var(--parch); font-family:'Cinzel',serif; font-size:1rem; font-weight:700; letter-spacing:0.12em; padding:0.85rem; cursor:pointer; transition:all 0.2s; text-transform:uppercase; box-shadow:0 3px 15px rgba(139,26,26,0.5),inset 0 1px 0 rgba(255,255,255,0.08); margin-top:0.5rem; }
-.roll-btn:hover:not(:disabled) { background:linear-gradient(180deg,#c0392b 0%,#a52020 100%); transform:translateY(-1px); box-shadow:0 5px 22px rgba(192,57,43,0.55); }
-.roll-btn:active:not(:disabled) { transform:translateY(1px); }
-.roll-btn:disabled { opacity:0.45; cursor:not-allowed; }
-@keyframes shake { 0%,100%{transform:translateX(0) rotate(0)} 20%{transform:translateX(-4px) rotate(-4deg)} 40%{transform:translateX(4px) rotate(4deg)} 60%{transform:translateX(-2px) rotate(-2deg)} 80%{transform:translateX(2px) rotate(2deg)} }
-.roll-btn.rolling { animation:shake 0.45s ease; }
-
-/* ATTR GRID */
-.attr-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:0.75rem; margin-bottom:1rem; }
-@media(max-width:500px){ .attr-grid { grid-template-columns:repeat(2,1fr); } }
-.attr-card { background:rgba(0,0,0,0.35); border:1px solid var(--border); border-radius:2px; padding:0.75rem 0.6rem 0.6rem; text-align:center; transition:border-color 0.3s; }
-.attr-card.rolled { border-color:var(--gold); }
-.attr-name { font-family:'Cinzel',serif; font-size:0.68rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--parch3); display:block; margin-bottom:0.4rem; }
-.attr-val { font-family:'Cinzel Decorative',serif; font-size:2.2rem; font-weight:900; color:var(--gold3); line-height:1; text-shadow:0 0 20px rgba(240,192,64,0.4); display:block; min-height:2.5rem; }
-.attr-val.empty { color:rgba(194,169,106,0.2); font-size:1.5rem; }
-.attr-dice { font-size:0.72rem; color:rgba(194,169,106,0.4); margin-top:0.25rem; font-style:italic; }
-
-/* RACE SECTION */
-.race-intro { font-size:1rem; color:var(--parch2); margin-bottom:1rem; font-style:italic; line-height:1.5; }
-.race-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:0.8rem; }
-@media(max-width:700px){ .race-grid { grid-template-columns:1fr 1fr; } }
-@media(max-width:420px){ .race-grid { grid-template-columns:1fr; } }
-.race-card { border:1px solid var(--border); border-radius:2px; padding:1rem; background:rgba(0,0,0,0.3); transition:all 0.25s; position:relative; overflow:hidden; }
-.race-card.eligible { border-color:var(--gold2); background:rgba(184,134,11,0.08); }
-.race-card.eligible::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold2),transparent); }
-.race-card.ineligible { border-color:rgba(90,62,24,0.4); opacity:0.5; }
-.race-card.human-card { border-color:var(--gold); background:rgba(184,134,11,0.05); }
-.race-name { font-family:'Cinzel',serif; font-size:0.95rem; font-weight:700; color:var(--gold3); margin-bottom:0.5rem; display:flex; align-items:center; gap:0.4rem; }
-.race-card.ineligible .race-name { color:var(--parch3); }
-.race-badge { font-size:0.6rem; padding:1px 5px; border-radius:1px; font-family:'Cinzel',serif; letter-spacing:0.05em; font-weight:700; }
-.badge-ok { background:rgba(74,222,128,0.15); color:#4ade80; border:1px solid rgba(74,222,128,0.3); }
-.badge-no { background:rgba(192,57,43,0.15); color:#e74c3c; border:1px solid rgba(192,57,43,0.3); }
-.race-adjusts { font-size:0.82rem; color:var(--parch3); font-style:italic; margin-bottom:0.5rem; }
-.req-row { display:flex; justify-content:space-between; font-size:0.78rem; padding:1px 0; }
-.req-label { color:rgba(194,169,106,0.6); }
-.req-range { font-family:'Cinzel',serif; font-size:0.72rem; }
-.req-ok { color:#4ade80; }
-.req-fail { color:#e74c3c; }
-.fail-reason { font-size:0.75rem; color:#e74c3c; margin-top:0.4rem; font-style:italic; }
-
-/* LOG */
-.log-list { display:flex; flex-direction:column; gap:0.6rem; max-height:420px; overflow-y:auto; padding-right:4px; }
-.log-list::-webkit-scrollbar { width:4px; }
-.log-list::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
-.log-entry { background:rgba(0,0,0,0.3); border:1px solid rgba(90,62,24,0.4); border-radius:2px; padding:0.7rem 0.9rem; animation:fadeIn 0.4s ease; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(-6px)} to{opacity:1;transform:none} }
-.log-entry.fresh { border-color:rgba(184,134,11,0.5); background:rgba(184,134,11,0.05); }
-.log-header { display:flex; justify-content:space-between; align-items:baseline; margin-bottom:0.4rem; }
-.log-who { font-family:'Cinzel',serif; font-size:0.85rem; font-weight:700; color:var(--gold2); }
-.log-time { font-size:0.72rem; color:rgba(194,169,106,0.35); }
-.log-attrs { display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:0.35rem; }
-.log-attr { background:rgba(0,0,0,0.3); border:1px solid var(--border); border-radius:2px; padding:0.15rem 0.45rem; font-size:0.78rem; }
-.log-attr span:first-child { color:rgba(194,169,106,0.5); font-size:0.7rem; margin-right:2px; }
-.log-attr span:last-child { font-family:'Cinzel',serif; color:var(--gold3); font-weight:700; }
-.log-races { font-size:0.78rem; color:var(--parch3); }
-.log-races strong { color:var(--gold2); }
-.empty-state { text-align:center; color:rgba(194,169,106,0.3); font-style:italic; padding:2rem; font-size:1rem; }
-.clear-btn { margin-left:auto; background:none; border:1px solid rgba(194,169,106,0.2); border-radius:2px; color:rgba(194,169,106,0.4); font-family:'Crimson Text',serif; font-size:0.82rem; padding:2px 10px; cursor:pointer; transition:all 0.2s; }
-.clear-btn:hover { border-color:var(--red); color:var(--red2); }
+:root{--parch:#f2e4c4;--parch2:#ddc99a;--parch3:#c4a96a;--red:#8b1a1a;--red2:#c0392b;--gold:#b8860b;--gold2:#d4a017;--gold3:#f0c040;--bg:#0e0a04;--panel:#1f1609;--panel2:#2a1e0c;--border:#5a3e18;}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Crimson Text',Georgia,serif;background:var(--bg);color:var(--parch);min-height:100vh;background-image:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(139,26,26,.12) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 80% 80%,rgba(184,134,11,.06) 0%,transparent 60%),repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px);}
+header{text-align:center;padding:3rem 1rem 1.5rem;position:relative;border-bottom:1px solid var(--border)}
+header::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(139,26,26,.08) 0%,transparent 100%);pointer-events:none}
+.h-ornament{color:var(--gold2);font-size:1.4rem;letter-spacing:1rem;display:block;margin-bottom:.5rem;opacity:.6}
+.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,4vw,2.8rem);font-weight:900;color:var(--gold3);text-shadow:0 0 40px rgba(212,160,23,.5),0 2px 6px rgba(0,0,0,.9);line-height:1.15}
+.h-sub{font-family:'Cinzel',serif;font-size:.8rem;color:var(--parch3);letter-spacing:.35em;text-transform:uppercase;margin-top:.6rem}
+.h-rule{width:300px;max-width:80%;height:1px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);margin:1rem auto 0}
+.info-bar{display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:.55rem 1rem;flex-wrap:wrap;border-bottom:1px solid rgba(90,62,24,.3)}
+.status-wrap{display:flex;align-items:center;gap:.45rem}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#e74c3c;box-shadow:0 0 8px rgba(231,76,60,.6);transition:all .4s}
+.status-dot.online{background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.6)}
+.status-dot.connecting{background:var(--gold2);box-shadow:0 0 8px rgba(212,160,23,.6);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-txt{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--parch3)}
+.last-update{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.08em;color:rgba(194,169,106,.45)}
+.last-update span{color:rgba(194,169,106,.7)}
+.wrap{max-width:1000px;margin:0 auto;padding:2rem 1.2rem 4rem}
+.panel{background:linear-gradient(160deg,var(--panel2) 0%,var(--panel) 100%);border:1px solid var(--border);border-radius:2px;padding:1.6rem;position:relative;box-shadow:0 6px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(212,160,23,.08);margin-bottom:1.8rem}
+.panel::after{content:'';position:absolute;top:4px;left:4px;right:4px;bottom:4px;border:1px solid rgba(184,134,11,.1);border-radius:1px;pointer-events:none}
+.corner{position:absolute;width:16px;height:16px;border-color:var(--gold2);border-style:solid;opacity:.5}
+.corner-tl{top:6px;left:6px;border-width:1px 0 0 1px}.corner-tr{top:6px;right:6px;border-width:1px 1px 0 0}.corner-bl{bottom:6px;left:6px;border-width:0 0 1px 1px}.corner-br{bottom:6px;right:6px;border-width:0 1px 1px 0}
+.panel-title{font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;color:var(--gold2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.3rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
+.fields-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem}
+@media(max-width:500px){.fields-row{grid-template-columns:1fr}}
+.field-group{display:flex;flex-direction:column;gap:.3rem}
+.field-label{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3)}
+.txt-input{width:100%;background:rgba(0,0,0,.5);border:1px solid var(--border);border-radius:2px;color:var(--parch);font-family:'Crimson Text',serif;font-size:1.1rem;padding:.5rem .8rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.txt-input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(212,160,23,.2)}
+.txt-input::placeholder{color:rgba(194,169,106,.3)}
+.roll-btn{width:100%;background:linear-gradient(180deg,#a52020 0%,var(--red) 100%);border:1px solid #7a1515;border-radius:2px;color:var(--parch);font-family:'Cinzel',serif;font-size:1rem;font-weight:700;letter-spacing:.12em;padding:.85rem;cursor:pointer;transition:all .2s;text-transform:uppercase;box-shadow:0 3px 15px rgba(139,26,26,.5);margin-top:.5rem}
+.roll-btn:hover:not(:disabled){background:linear-gradient(180deg,#c0392b 0%,#a52020 100%);transform:translateY(-1px);box-shadow:0 5px 22px rgba(192,57,43,.55)}
+.roll-btn:active:not(:disabled){transform:translateY(1px)}
+.roll-btn:disabled{opacity:.45;cursor:not-allowed}
+@keyframes shake{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-4px) rotate(-4deg)}40%{transform:translateX(4px) rotate(4deg)}60%{transform:translateX(-2px) rotate(-2deg)}80%{transform:translateX(2px) rotate(2deg)}}
+.roll-btn.rolling{animation:shake .45s ease}
+.attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem}
+@media(max-width:500px){.attr-grid{grid-template-columns:repeat(2,1fr)}}
+.attr-card{background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:2px;padding:.75rem .6rem .6rem;text-align:center;transition:border-color .3s}
+.attr-card.rolled{border-color:var(--gold)}
+.attr-name{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--parch3);display:block;margin-bottom:.4rem}
+.attr-val{font-family:'Cinzel Decorative',serif;font-size:2.2rem;font-weight:900;color:var(--gold3);line-height:1;text-shadow:0 0 20px rgba(240,192,64,.4);display:block;min-height:2.5rem}
+.attr-val.empty{color:rgba(194,169,106,.2);font-size:1.5rem}
+.attr-dice{font-size:.72rem;color:rgba(194,169,106,.4);margin-top:.25rem;font-style:italic}
+.race-intro{font-size:1rem;color:var(--parch2);margin-bottom:1rem;font-style:italic;line-height:1.5}
+.race-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem}
+@media(max-width:700px){.race-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.race-grid{grid-template-columns:1fr}}
+.race-card{border:1px solid var(--border);border-radius:2px;padding:1rem;background:rgba(0,0,0,.3);position:relative;overflow:hidden}
+.race-card.eligible{border-color:var(--gold2);background:rgba(184,134,11,.08)}
+.race-card.eligible::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),transparent)}
+.race-card.ineligible{border-color:rgba(90,62,24,.4);opacity:.5}
+.race-card.human-card{border-color:var(--gold);background:rgba(184,134,11,.05)}
+.race-name{font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--gold3);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.race-card.ineligible .race-name{color:var(--parch3)}
+.race-badge{font-size:.6rem;padding:1px 5px;border-radius:1px;font-family:'Cinzel',serif;letter-spacing:.05em;font-weight:700}
+.badge-ok{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
+.badge-no{background:rgba(192,57,43,.15);color:#e74c3c;border:1px solid rgba(192,57,43,.3)}
+.race-adjusts{font-size:.82rem;color:var(--parch3);font-style:italic;margin-bottom:.5rem}
+.req-row{display:flex;justify-content:space-between;font-size:.78rem;padding:1px 0}
+.req-label{color:rgba(194,169,106,.6)}.req-range{font-family:'Cinzel',serif;font-size:.72rem}.req-ok{color:#4ade80}.req-fail{color:#e74c3c}
+.fail-reason{font-size:.75rem;color:#e74c3c;margin-top:.4rem;font-style:italic}
+.log-list{display:flex;flex-direction:column;gap:.6rem;max-height:450px;overflow-y:auto;padding-right:4px}
+.log-list::-webkit-scrollbar{width:4px}.log-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.log-entry{background:rgba(0,0,0,.3);border:1px solid rgba(90,62,24,.4);border-radius:2px;padding:.75rem 1rem;animation:fadeIn .4s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.log-entry.fresh{border-color:rgba(184,134,11,.5);background:rgba(184,134,11,.05)}
+.log-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.15rem}
+.log-char{font-family:'Cinzel',serif;font-size:.92rem;font-weight:700;color:var(--gold3)}
+.log-player{font-size:.8rem;color:var(--parch3);margin-bottom:.4rem;font-style:italic}
+.log-time{font-size:.7rem;color:rgba(194,169,106,.35)}
+.log-attrs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.35rem}
+.log-attr{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;padding:.15rem .45rem;font-size:.78rem}
+.log-attr span:first-child{color:rgba(194,169,106,.5);font-size:.7rem;margin-right:2px}
+.log-attr span:last-child{font-family:'Cinzel',serif;color:var(--gold3);font-weight:700}
+.log-races{font-size:.8rem;color:var(--parch3)}.log-races strong{color:var(--gold2)}
+.empty-state{text-align:center;color:rgba(194,169,106,.3);font-style:italic;padding:2.5rem;font-size:1rem}
+.clear-btn{margin-left:auto;background:none;border:1px solid rgba(194,169,106,.2);border-radius:2px;color:rgba(194,169,106,.4);font-family:'Crimson Text',serif;font-size:.82rem;padding:2px 10px;cursor:pointer;transition:all .2s}
+.clear-btn:hover{border-color:var(--red2);color:var(--red2)}
 </style>
 </head>
 <body>
-
 <header>
   <span class="h-ornament">✦ ✦ ✦</span>
   <div class="h-title">Taverna dos Dados</div>
   <div class="h-sub">AD&amp;D 2ª Edição · Geração de Atributos · 3d6</div>
   <div class="h-rule"></div>
 </header>
-
-<div class="status-bar">
-  <div class="status-dot connecting" id="statusDot"></div>
-  <span id="statusText" style="font-family:'Cinzel',serif;font-size:0.72rem;letter-spacing:0.1em;color:var(--parch3)">CONECTANDO...</span>
+<div class="info-bar">
+  <div class="status-wrap">
+    <div class="status-dot connecting" id="statusDot"></div>
+    <span class="status-txt" id="statusTxt">CONECTANDO...</span>
+  </div>
+  <div class="last-update">ÚLTIMA ATUALIZAÇÃO: <span id="lastUpdate">—</span></div>
 </div>
-
 <div class="wrap">
-
-  <!-- PAINEL DE ROLAGEM -->
   <div class="panel">
-    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
     <div class="panel-title">🎲 Rolar Atributos do Personagem</div>
-    <label class="field-label">Nome do Aventureiro</label>
-    <input class="name-input" id="playerName" type="text" placeholder="Ex: Thorin, Legolas, Gandalf..." maxlength="35"/>
-    <div class="attr-grid" id="attrGrid">
+    <div class="fields-row">
+      <div class="field-group">
+        <label class="field-label" for="playerName">Seu Nome (jogador)</label>
+        <input class="txt-input" id="playerName" type="text" placeholder="Ex: Diego, Lucas..." maxlength="35"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="charName">Nome do Aventureiro</label>
+        <input class="txt-input" id="charName" type="text" placeholder="Ex: Thorin, Legolas..." maxlength="35"/>
+      </div>
+    </div>
+    <div class="attr-grid">
       <div class="attr-card" id="card-for"><span class="attr-name">Força</span><span class="attr-val empty" id="val-for">—</span><div class="attr-dice" id="dice-for"></div></div>
       <div class="attr-card" id="card-dex"><span class="attr-name">Destreza</span><span class="attr-val empty" id="val-dex">—</span><div class="attr-dice" id="dice-dex"></div></div>
       <div class="attr-card" id="card-con"><span class="attr-name">Constituição</span><span class="attr-val empty" id="val-con">—</span><div class="attr-dice" id="dice-con"></div></div>
@@ -166,241 +126,42 @@ header::before { content:''; position:absolute; inset:0; background:linear-gradi
     </div>
     <button class="roll-btn" id="rollBtn">⚄ Rolar 3d6 para os 6 Atributos</button>
   </div>
-
-  <!-- RAÇAS -->
   <div class="panel" id="racePanel" style="display:none">
-    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
     <div class="panel-title">📜 Raças Disponíveis</div>
     <p class="race-intro" id="raceIntro"></p>
     <div class="race-grid" id="raceGrid"></div>
   </div>
-
-  <!-- HISTÓRICO -->
   <div class="panel">
-    <div class="corner corner-tl"></div><div class="corner corner-tr"></div>
-    <div class="corner corner-bl"></div><div class="corner corner-br"></div>
-    <div class="panel-title">
-      📜 Crônica dos Aventureiros
-      <button class="clear-btn" id="clearBtn">Limpar</button>
-    </div>
-    <div class="log-list" id="logList">
-      <div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div>
-    </div>
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="panel-title">📜 Crônica dos Aventureiros<button class="clear-btn" id="clearBtn">Limpar</button></div>
+    <div class="log-list" id="logList"><div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div></div>
   </div>
-
 </div>
-
-<!-- Firebase SDK -->
 <script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, addDoc, onSnapshot, query, orderBy, deleteDoc, doc, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-
-// ── CONFIG FIREBASE ──────────────────────────────────────────────────────────
-const firebaseConfig = {
-  apiKey: "AIzaSyCZ4S9TeljRTwuHBTkAgZp0iwRBZfiH7eQ",
-  authDomain: "taverna-dos-dados-rpg.firebaseapp.com",
-  projectId: "taverna-dos-dados-rpg",
-  storageBucket: "taverna-dos-dados-rpg.firebasestorage.app",
-  messagingSenderId: "879653742565",
-  appId: "1:879653742565:web:217907eed0b10e5454310c"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const rollsRef = collection(db, "rolls");
-
-// ── STATUS ───────────────────────────────────────────────────────────────────
-function setStatus(state) {
-  const dot = document.getElementById('statusDot');
-  const txt = document.getElementById('statusText');
-  dot.className = 'status-dot';
-  if (state === 'online')       { dot.classList.add(''); txt.textContent = 'CONECTADO — RESULTADOS EM TEMPO REAL'; dot.style.background='#4ade80'; dot.style.boxShadow='0 0 8px rgba(74,222,128,0.6)'; }
-  else if (state === 'offline') { dot.classList.add('offline'); txt.textContent = 'SEM CONEXÃO'; }
-  else                          { dot.classList.add('connecting'); txt.textContent = 'CONECTANDO...'; dot.style.background=''; dot.style.boxShadow=''; }
-}
-
-// ── RAÇAS ────────────────────────────────────────────────────────────────────
-const RACES = [
-  { id:'humano',    name:'Humano',    icon:'👤', adjusts:null,              adjustText:'Sem ajustes raciais',            reqs:{for:[3,18],dex:[3,18],con:[3,18],int:[3,18],sab:[3,18],car:[3,18]} },
-  { id:'anao',      name:'Anão',      icon:'⛏️', adjusts:{con:+1,car:-1},   adjustText:'+1 Constituição / −1 Carisma',   reqs:{for:[8,18],dex:[3,17],con:[11,18],int:[3,18],sab:[3,18],car:[3,17]} },
-  { id:'elfo',      name:'Elfo',      icon:'🏹', adjusts:{dex:+1,con:-1},   adjustText:'+1 Destreza / −1 Constituição',  reqs:{for:[3,18],dex:[6,18],con:[7,18],int:[8,18],sab:[3,18],car:[8,18]} },
-  { id:'gnomo',     name:'Gnomo',     icon:'🔮', adjusts:{int:+1,sab:-1},   adjustText:'+1 Inteligência / −1 Sabedoria', reqs:{for:[6,18],dex:[3,18],con:[8,18],int:[6,18],sab:[3,18],car:[3,18]} },
-  { id:'meio-elfo', name:'Meio-Elfo', icon:'🌙', adjusts:null,              adjustText:'Sem ajustes raciais',            reqs:{for:[3,18],dex:[6,18],con:[6,18],int:[4,18],sab:[3,18],car:[3,18]} },
-  { id:'halfling',  name:'Halfling',  icon:'🍃', adjusts:{dex:+1,for:-1},   adjustText:'+1 Destreza / −1 Força',         reqs:{for:[7,18],dex:[7,18],con:[10,18],int:[6,18],sab:[3,17],car:[3,18]} }
-];
-const ATTR_KEYS  = ['for','dex','con','int','sab','car'];
-const ATTR_NAMES = {for:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',sab:'Sabedoria',car:'Carisma'};
-
-function checkRace(race, attrs) {
-  const failures = [];
-  for (const key of ATTR_KEYS) {
-    const [min,max] = race.reqs[key];
-    if (attrs[key] < min || attrs[key] > max) failures.push({key, val:attrs[key], min, max});
-  }
-  return { eligible: failures.length === 0, failures };
-}
-
-// ── UTILS ────────────────────────────────────────────────────────────────────
-function d6() { return Math.floor(Math.random()*6)+1; }
-function roll3d6() { const d=[d6(),d6(),d6()]; return {total:d.reduce((a,b)=>a+b,0),dice:d}; }
-function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function fmtTime(ts) { return new Date(ts).toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'}); }
-
-// ── RENDER RACE PANEL ────────────────────────────────────────────────────────
-function renderRacePanel(attrs, name) {
-  const panel = document.getElementById('racePanel');
-  const grid  = document.getElementById('raceGrid');
-  const intro = document.getElementById('raceIntro');
-  panel.style.display = 'block';
-
-  const eligible = RACES.filter(r => checkRace(r, attrs).eligible);
-  intro.textContent = `Com os atributos de ${name}, as raças disponíveis são: ${eligible.map(r=>r.name).join(', ') || 'nenhuma'}.`;
-  grid.innerHTML = '';
-
-  for (const race of RACES) {
-    const {eligible:ok, failures} = checkRace(race, attrs);
-    const isHuman = race.id === 'humano';
-    const card = document.createElement('div');
-    card.className = `race-card ${ok ? (isHuman ? 'human-card eligible' : 'eligible') : 'ineligible'}`;
-
-    let reqsHtml = isHuman
-      ? `<div class="req-row"><span class="req-label" style="color:rgba(240,192,64,0.6)">Sem restrições de atributo</span></div>`
-      : ATTR_KEYS.filter(k => !(race.reqs[k][0]===3 && race.reqs[k][1]===18)).map(k => {
-          const [min,max] = race.reqs[k]; const val = attrs[k]; const pass = val>=min && val<=max;
-          return `<div class="req-row"><span class="req-label">${ATTR_NAMES[k]}</span><span class="req-range ${pass?'req-ok':'req-fail'}">${min}–${max} (${val})</span></div>`;
-        }).join('');
-
-    const failHtml = !ok && failures.length
-      ? `<div class="fail-reason">✗ ${failures.map(f=>`${ATTR_NAMES[f.key]} (${f.val} < ${f.min})`).join(', ')}</div>`
-      : '';
-
-    card.innerHTML = `
-      <div class="race-name">${race.icon} ${race.name}
-        <span class="race-badge ${ok?'badge-ok':'badge-no'}">${ok?'APTO':'INAPTO'}</span>
-      </div>
-      <div class="race-adjusts">${race.adjustText}</div>
-      ${reqsHtml}${failHtml}`;
-    grid.appendChild(card);
-  }
-  panel.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-// ── RENDER LOG ───────────────────────────────────────────────────────────────
-let freshId = null;
-function renderLog(entries) {
-  const list = document.getElementById('logList');
-  list.innerHTML = '';
-  if (!entries || entries.length === 0) {
-    list.innerHTML = '<div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div>';
-    return;
-  }
-  for (const entry of entries) {
-    const isFresh = entry.id === freshId;
-    const eligible = RACES.filter(r => checkRace(r, entry.attrs).eligible);
-    const div = document.createElement('div');
-    div.className = `log-entry ${isFresh ? 'fresh' : ''}`;
-
-    const attrHtml = ATTR_KEYS.map(k =>
-      `<span class="log-attr"><span>${ATTR_NAMES[k].slice(0,3)}</span><span>${entry.attrs[k]}</span></span>`
-    ).join('');
-
-    div.innerHTML = `
-      <div class="log-header">
-        <span class="log-who">⚔ ${esc(entry.name)}</span>
-        <span class="log-time">${fmtTime(entry.ts)}</span>
-      </div>
-      <div class="log-attrs">${attrHtml}</div>
-      <div class="log-races"><strong>Raças:</strong> ${eligible.map(r=>r.name).join(', ') || 'Nenhuma'}</div>`;
-    list.appendChild(div);
-    if (isFresh) setTimeout(() => div.classList.remove('fresh'), 3000);
-  }
-}
-
-// ── REAL-TIME LISTENER ───────────────────────────────────────────────────────
-const q = query(rollsRef, orderBy('ts', 'desc'));
-onSnapshot(q,
-  (snapshot) => {
-    setStatus('online');
-    const entries = snapshot.docs.map(d => ({id: d.id, ...d.data()}));
-    renderLog(entries);
-  },
-  (err) => {
-    console.error(err);
-    setStatus('offline');
-  }
-);
-
-// ── ANIMATION ────────────────────────────────────────────────────────────────
-async function animateRoll(attrs) {
-  for (let f = 0; f < 10; f++) {
-    for (const key of ATTR_KEYS) document.getElementById('val-'+key).textContent = Math.floor(Math.random()*16)+3;
-    await new Promise(r => setTimeout(r, 45));
-  }
-  for (const key of ATTR_KEYS) {
-    const el = document.getElementById('val-'+key);
-    el.textContent = attrs[key];
-    el.className = 'attr-val';
-    document.getElementById('card-'+key).className = 'attr-card rolled';
-  }
-}
-
-// ── ROLL ─────────────────────────────────────────────────────────────────────
-document.getElementById('rollBtn').addEventListener('click', async () => {
-  const name = document.getElementById('playerName').value.trim() || 'Aventureiro';
-  const btn  = document.getElementById('rollBtn');
-  btn.disabled = true;
-  btn.classList.add('rolling');
-
-  for (const key of ATTR_KEYS) {
-    document.getElementById('val-'+key).textContent = '?';
-    document.getElementById('card-'+key).className = 'attr-card';
-  }
-  await new Promise(r => setTimeout(r, 50));
-
-  const rolls = {}, diceDetails = {};
-  for (const key of ATTR_KEYS) {
-    const r = roll3d6();
-    rolls[key] = r.total;
-    diceDetails[key] = r.dice;
-  }
-
-  await animateRoll(rolls);
-  for (const key of ATTR_KEYS)
-    document.getElementById('dice-'+key).textContent = `[${diceDetails[key].join(' + ')}]`;
-
-  // Save to Firestore
-  try {
-    const docRef = await addDoc(rollsRef, { name, attrs: rolls, ts: Date.now() });
-    freshId = docRef.id;
-  } catch(e) {
-    console.error('Erro ao salvar:', e);
-    alert('Erro ao salvar no banco. Verifique a conexão.');
-  }
-
-  renderRacePanel(rolls, name);
-  btn.classList.remove('rolling');
-  btn.disabled = false;
-});
-
-// ── CLEAR (com senha) ────────────────────────────────────────────────────────
-document.getElementById('clearBtn').addEventListener('click', async () => {
-  const senha = prompt('🔐 Senha do Mestre:');
-  if (senha === null) return;
-  if (senha !== 'LucasNoob') {
-    alert('❌ Senha incorreta! Apenas o Mestre pode apagar a crônica.');
-    return;
-  }
-  if (!confirm('Apagar TODA a crônica de aventureiros do servidor?')) return;
-  try {
-    const snap = await getDocs(rollsRef);
-    const deletes = snap.docs.map(d => deleteDoc(doc(db, 'rolls', d.id)));
-    await Promise.all(deletes);
-  } catch(e) {
-    alert('Erro ao limpar: ' + e.message);
-  }
-});
-
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,onSnapshot,query,orderBy,deleteDoc,doc,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCZ4S9TeljRTwuHBTkAgZp0iwRBZfiH7eQ",authDomain:"taverna-dos-dados-rpg.firebaseapp.com",projectId:"taverna-dos-dados-rpg",storageBucket:"taverna-dos-dados-rpg.firebasestorage.app",messagingSenderId:"879653742565",appId:"1:879653742565:web:217907eed0b10e5454310c"};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+const rollsRef=collection(db,"rolls");
+function setStatus(s){const dot=document.getElementById('statusDot'),txt=document.getElementById('statusTxt');dot.className='status-dot';if(s==='online'){dot.classList.add('online');txt.textContent='CONECTADO — TEMPO REAL';}else if(s==='offline'){txt.textContent='SEM CONEXÃO';}else{dot.classList.add('connecting');txt.textContent='CONECTANDO...';}}
+function updateLastUpdate(){const n=new Date();document.getElementById('lastUpdate').textContent=n.toLocaleDateString('pt-BR')+' às '+n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+const RACES=[{id:'humano',name:'Humano',icon:'👤',adjusts:null,adjustText:'Sem ajustes raciais',reqs:{for:[3,18],dex:[3,18],con:[3,18],int:[3,18],sab:[3,18],car:[3,18]}},{id:'anao',name:'Anão',icon:'⛏️',adjusts:{con:1,car:-1},adjustText:'+1 Constituição / −1 Carisma',reqs:{for:[8,18],dex:[3,17],con:[11,18],int:[3,18],sab:[3,18],car:[3,17]}},{id:'elfo',name:'Elfo',icon:'🏹',adjusts:{dex:1,con:-1},adjustText:'+1 Destreza / −1 Constituição',reqs:{for:[3,18],dex:[6,18],con:[7,18],int:[8,18],sab:[3,18],car:[8,18]}},{id:'gnomo',name:'Gnomo',icon:'🔮',adjusts:{int:1,sab:-1},adjustText:'+1 Inteligência / −1 Sabedoria',reqs:{for:[6,18],dex:[3,18],con:[8,18],int:[6,18],sab:[3,18],car:[3,18]}},{id:'meio-elfo',name:'Meio-Elfo',icon:'🌙',adjusts:null,adjustText:'Sem ajustes raciais',reqs:{for:[3,18],dex:[6,18],con:[6,18],int:[4,18],sab:[3,18],car:[3,18]}},{id:'halfling',name:'Halfling',icon:'🍃',adjusts:{dex:1,for:-1},adjustText:'+1 Destreza / −1 Força',reqs:{for:[7,18],dex:[7,18],con:[10,18],int:[6,18],sab:[3,17],car:[3,18]}}];
+const ATTR_KEYS=['for','dex','con','int','sab','car'];
+const ATTR_NAMES={for:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',sab:'Sabedoria',car:'Carisma'};
+function checkRace(race,attrs){const f=[];for(const k of ATTR_KEYS){const[min,max]=race.reqs[k];if(attrs[k]<min||attrs[k]>max)f.push({key:k,val:attrs[k],min,max});}return{eligible:f.length===0,failures:f};}
+function d6(){return Math.floor(Math.random()*6)+1;}
+function roll3d6(){const d=[d6(),d6(),d6()];return{total:d.reduce((a,b)=>a+b,0),dice:d};}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtDT(ts){const d=new Date(ts);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+function renderRacePanel(attrs,charName){const panel=document.getElementById('racePanel'),grid=document.getElementById('raceGrid'),intro=document.getElementById('raceIntro');panel.style.display='block';const el=RACES.filter(r=>checkRace(r,attrs).eligible);intro.textContent=`Com os atributos de ${charName}, as raças disponíveis são: ${el.map(r=>r.name).join(', ')||'nenhuma'}.`;grid.innerHTML='';for(const race of RACES){const{eligible:ok,failures}=checkRace(race,attrs);const isH=race.id==='humano';const card=document.createElement('div');card.className=`race-card ${ok?(isH?'human-card eligible':'eligible'):'ineligible'}`;const rq=isH?`<div class="req-row"><span class="req-label" style="color:rgba(240,192,64,.6)">Sem restrições de atributo</span></div>`:ATTR_KEYS.filter(k=>!(race.reqs[k][0]===3&&race.reqs[k][1]===18)).map(k=>{const[min,max]=race.reqs[k],val=attrs[k],pass=val>=min&&val<=max;return`<div class="req-row"><span class="req-label">${ATTR_NAMES[k]}</span><span class="req-range ${pass?'req-ok':'req-fail'}">${min}–${max} (${val})</span></div>`;}).join('');const fh=!ok&&failures.length?`<div class="fail-reason">✗ ${failures.map(f=>`${ATTR_NAMES[f.key]} (${f.val} < ${f.min})`).join(', ')}</div>`:'';card.innerHTML=`<div class="race-name">${race.icon} ${race.name}<span class="race-badge ${ok?'badge-ok':'badge-no'}">${ok?'APTO':'INAPTO'}</span></div><div class="race-adjusts">${race.adjustText}</div>${rq}${fh}`;grid.appendChild(card);}panel.scrollIntoView({behavior:'smooth',block:'start'});}
+let freshId=null;
+function renderLog(entries){const list=document.getElementById('logList');list.innerHTML='';if(!entries||entries.length===0){list.innerHTML='<div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div>';return;}for(const entry of entries){const isFresh=entry.id===freshId;const eligible=RACES.filter(r=>checkRace(r,entry.attrs).eligible);const div=document.createElement('div');div.className=`log-entry ${isFresh?'fresh':''}`;const attrHtml=ATTR_KEYS.map(k=>`<span class="log-attr"><span>${ATTR_NAMES[k].slice(0,3)}</span><span>${entry.attrs[k]}</span></span>`).join('');div.innerHTML=`<div class="log-header"><span class="log-char">⚔ ${esc(entry.charName||'Sem nome')}</span><span class="log-time">${fmtDT(entry.ts)}</span></div><div class="log-player">👤 Jogador: ${esc(entry.playerName||'?')}</div><div class="log-attrs">${attrHtml}</div><div class="log-races"><strong>Raças possíveis:</strong> ${eligible.map(r=>r.name).join(', ')||'Nenhuma'}</div>`;list.appendChild(div);if(isFresh)setTimeout(()=>div.classList.remove('fresh'),3000);}}
+const q=query(rollsRef,orderBy('ts','desc'));
+onSnapshot(q,(snapshot)=>{setStatus('online');updateLastUpdate();const entries=snapshot.docs.map(d=>({id:d.id,...d.data()}));renderLog(entries);},(err)=>{console.error('Firestore:',err);setStatus('offline');});
+document.getElementById('rollBtn').addEventListener('click',async()=>{const playerName=document.getElementById('playerName').value.trim()||'Jogador';const charName=document.getElementById('charName').value.trim()||'Aventureiro';const btn=document.getElementById('rollBtn');btn.disabled=true;btn.classList.add('rolling');for(const key of ATTR_KEYS){document.getElementById('val-'+key).textContent='?';document.getElementById('card-'+key).className='attr-card';document.getElementById('dice-'+key).textContent='';}await new Promise(r=>setTimeout(r,50));const rolls={},diceDetails={};for(const key of ATTR_KEYS){const r=roll3d6();rolls[key]=r.total;diceDetails[key]=r.dice;}for(let f=0;f<10;f++){for(const key of ATTR_KEYS)document.getElementById('val-'+key).textContent=Math.floor(Math.random()*16)+3;await new Promise(r=>setTimeout(r,45));}for(const key of ATTR_KEYS){const el=document.getElementById('val-'+key);el.textContent=rolls[key];el.className='attr-val';document.getElementById('card-'+key).className='attr-card rolled';}for(const key of ATTR_KEYS)document.getElementById('dice-'+key).textContent=`[${diceDetails[key].join(' + ')}]`;try{const docRef=await addDoc(rollsRef,{playerName,charName,attrs:rolls,ts:Date.now()});freshId=docRef.id;}catch(e){console.error('Erro:',e);alert('Erro ao salvar no Firebase: '+e.message);}renderRacePanel(rolls,charName);btn.classList.remove('rolling');btn.disabled=false;});
+document.getElementById('clearBtn').addEventListener('click',async()=>{const senha=prompt('🔐 Senha do Mestre:');if(senha===null)return;if(senha!=='LucasNoob'){alert('❌ Senha incorreta! Apenas o Mestre pode apagar a crônica.');return;}if(!confirm('Apagar TODA a crônica do servidor?'))return;try{const snap=await getDocs(rollsRef);await Promise.all(snap.docs.map(d=>deleteDoc(doc(db,'rolls',d.id))));}catch(e){alert('Erro: '+e.message);}});
 </script>
 </body>
 </html>
