@@ -8,151 +8,108 @@
 <style>
 :root{--parch:#f2e4c4;--parch2:#ddc99a;--parch3:#c4a96a;--red:#8b1a1a;--red2:#c0392b;--gold:#b8860b;--gold2:#d4a017;--gold3:#f0c040;--bg:#0e0a04;--panel:#1f1609;--panel2:#2a1e0c;--border:#5a3e18;}
 *{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
-body{font-family:'Crimson Text',Georgia,serif;background:var(--bg);color:var(--parch);min-height:100vh;background-image:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(139,26,26,.12) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 80% 80%,rgba(184,134,11,.06) 0%,transparent 60%),repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px);}
-header{text-align:center;padding:3rem 1rem 1.5rem;position:relative;border-bottom:1px solid var(--border)}
-header::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(139,26,26,.08) 0%,transparent 100%);pointer-events:none}
-.h-ornament{color:var(--gold2);font-size:1.4rem;letter-spacing:1rem;display:block;margin-bottom:.5rem;opacity:.6}
-.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,4vw,2.8rem);font-weight:900;color:var(--gold3);text-shadow:0 0 40px rgba(212,160,23,.5),0 2px 6px rgba(0,0,0,.9);line-height:1.15}
-.h-sub{font-family:'Cinzel',serif;font-size:.8rem;color:var(--parch3);letter-spacing:.35em;text-transform:uppercase;margin-top:.6rem}
-.h-rule{width:300px;max-width:80%;height:1px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);margin:1rem auto 0}
-.info-bar{display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:.55rem 1rem;flex-wrap:wrap;border-bottom:1px solid rgba(90,62,24,.3)}
-.status-wrap{display:flex;align-items:center;gap:.45rem}
-.status-dot{width:8px;height:8px;border-radius:50%;background:#e74c3c;box-shadow:0 0 8px rgba(231,76,60,.6);transition:all .4s}
+body{font-family:'Crimson Text',Georgia,serif;background:var(--bg);color:var(--parch);min-height:100vh;background-image:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(139,26,26,.12) 0%,transparent 60%),repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px);}
+header{text-align:center;padding:3rem 1rem 1.5rem;border-bottom:1px solid var(--border)}
+.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.6rem,4vw,2.8rem);color:var(--gold3);text-shadow:0 0 40px rgba(212,160,23,.5);}
+.info-bar{display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:.55rem 1rem;border-bottom:1px solid rgba(90,62,24,.3)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#e74c3c;}
 .status-dot.online{background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.6)}
-.status-dot.connecting{background:var(--gold2);box-shadow:0 0 8px rgba(212,160,23,.6);animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.status-txt{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--parch3)}
-.last-update{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.08em;color:rgba(194,169,106,.45)}
-.last-update span{color:rgba(194,169,106,.7)}
 .wrap{max-width:1000px;margin:0 auto;padding:2rem 1.2rem 4rem}
-.panel{background:linear-gradient(160deg,var(--panel2) 0%,var(--panel) 100%);border:1px solid var(--border);border-radius:2px;padding:1.6rem;position:relative;box-shadow:0 6px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(212,160,23,.08);margin-bottom:1.8rem}
-.panel::after{content:'';position:absolute;top:4px;left:4px;right:4px;bottom:4px;border:1px solid rgba(184,134,11,.1);border-radius:1px;pointer-events:none}
-.corner{position:absolute;width:16px;height:16px;border-color:var(--gold2);border-style:solid;opacity:.5}
-.corner-tl{top:6px;left:6px;border-width:1px 0 0 1px}.corner-tr{top:6px;right:6px;border-width:1px 1px 0 0}.corner-bl{bottom:6px;left:6px;border-width:0 0 1px 1px}.corner-br{bottom:6px;right:6px;border-width:0 1px 1px 0}
-.panel-title{font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;color:var(--gold2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.3rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
-.fields-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem}
-@media(max-width:500px){.fields-row{grid-template-columns:1fr}}
-.field-group{display:flex;flex-direction:column;gap:.3rem}
-.field-label{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3)}
-.txt-input{width:100%;background:rgba(0,0,0,.5);border:1px solid var(--border);border-radius:2px;color:var(--parch);font-family:'Crimson Text',serif;font-size:1.1rem;padding:.5rem .8rem;outline:none;transition:border-color .2s,box-shadow .2s}
-.txt-input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(212,160,23,.2)}
-.txt-input::placeholder{color:rgba(194,169,106,.3)}
-.roll-btn{width:100%;background:linear-gradient(180deg,#a52020 0%,var(--red) 100%);border:1px solid #7a1515;border-radius:2px;color:var(--parch);font-family:'Cinzel',serif;font-size:1rem;font-weight:700;letter-spacing:.12em;padding:.85rem;cursor:pointer;transition:all .2s;text-transform:uppercase;box-shadow:0 3px 15px rgba(139,26,26,.5);margin-top:.5rem}
-.roll-btn:hover:not(:disabled){background:linear-gradient(180deg,#c0392b 0%,#a52020 100%);transform:translateY(-1px);box-shadow:0 5px 22px rgba(192,57,43,.55)}
-.roll-btn:active:not(:disabled){transform:translateY(1px)}
-.roll-btn:disabled{opacity:.45;cursor:not-allowed}
-@keyframes shake{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-4px) rotate(-4deg)}40%{transform:translateX(4px) rotate(4deg)}60%{transform:translateX(-2px) rotate(-2deg)}80%{transform:translateX(2px) rotate(2deg)}}
-.roll-btn.rolling{animation:shake .45s ease}
-.attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem}
-@media(max-width:500px){.attr-grid{grid-template-columns:repeat(2,1fr)}}
-.attr-card{background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:2px;padding:.75rem .6rem .6rem;text-align:center;transition:border-color .3s}
-.attr-card.rolled{border-color:var(--gold)}
-.attr-name{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--parch3);display:block;margin-bottom:.4rem}
-.attr-val{font-family:'Cinzel Decorative',serif;font-size:2.2rem;font-weight:900;color:var(--gold3);line-height:1;text-shadow:0 0 20px rgba(240,192,64,.4);display:block;min-height:2.5rem}
-.attr-val.empty{color:rgba(194,169,106,.2);font-size:1.5rem}
-.attr-dice{font-size:.72rem;color:rgba(194,169,106,.4);margin-top:.25rem;font-style:italic}
+.panel{background:linear-gradient(160deg,var(--panel2) 0%,var(--panel) 100%);border:1px solid var(--border);padding:1.6rem;position:relative;margin-bottom:1.8rem}
+.panel-title{font-family:'Cinzel',serif;font-size:.9rem;color:var(--gold2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.3rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);display:flex;align-items:center;}
 
-/* LOG - ESTILO DO BOTÃO X */
-.log-list{display:flex;flex-direction:column;gap:.6rem;max-height:450px;overflow-y:auto;padding-right:4px}
-.log-entry{background:rgba(0,0,0,.3);border:1px solid rgba(90,62,24,.4);border-radius:2px;padding:.75rem 1rem;animation:fadeIn .4s ease;position:relative;}
-.del-btn{position:absolute;top:8px;right:8px;background:none;border:1px solid rgba(139,26,26,.3);color:rgba(139,26,26,.6);font-size:.8rem;cursor:pointer;padding:0 5px;border-radius:2px;transition:all .2s;font-weight:bold;}
-.del-btn:hover{border-color:var(--red2);color:var(--red2);background:rgba(139,26,26,.1);}
+/* AJUSTE DOS CAMPOS DE INPUT */
+.fields-row{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-bottom:2rem;max-width:800px;margin-left:auto;}
+.field-group{display:flex;flex-direction:column;gap:.5rem}
+.field-label{font-family:'Cinzel',serif;font-size:.72rem;color:var(--parch3);text-align:left}
+.txt-input{background:rgba(0,0,0,.5);border:1px solid var(--border);color:var(--parch);padding:.7rem;outline:none;}
 
-@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
-.log-entry.fresh{border-color:rgba(184,134,11,.5);background:rgba(184,134,11,.05)}
-.log-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.15rem;padding-right:20px;}
-.log-char{font-family:'Cinzel',serif;font-size:.92rem;font-weight:700;color:var(--gold3)}
-.log-player{font-size:.8rem;color:var(--parch3);margin-bottom:.4rem;font-style:italic}
-.log-time{font-size:.7rem;color:rgba(194,169,106,.35)}
-.log-attrs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.35rem}
-.log-attr{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;padding:.15rem .45rem;font-size:.78rem}
-.log-attr span:first-child{color:rgba(194,169,106,.5);font-size:.7rem;margin-right:2px}
-.log-attr span:last-child{font-family:'Cinzel',serif;color:var(--gold3);font-weight:700}
-.log-races{font-size:.8rem;color:var(--parch3)}.log-races strong{color:var(--gold2)}
-.empty-state{text-align:center;color:rgba(194,169,106,.3);font-style:italic;padding:2.5rem;font-size:1rem}
-.clear-btn{margin-left:auto;background:none;border:1px solid rgba(194,169,106,.2);border-radius:2px;color:rgba(194,169,106,.4);font-family:'Crimson Text',serif;font-size:.82rem;padding:2px 10px;cursor:pointer;transition:all .2s}
-.clear-btn:hover{border-color:var(--red2);color:var(--red2)}
+/* GRADE DE ATRIBUTOS (COMO NO PRINT) */
+.attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;max-width:800px;margin:2rem auto;}
+.attr-card{background:rgba(0,0,0,.35);border:1px solid var(--border);padding:1rem;text-align:center;min-height:100px;display:flex;flex-direction:column;justify-content:center;}
+.attr-name{font-family:'Cinzel',serif;font-size:.7rem;color:var(--parch3);text-transform:uppercase;margin-bottom:0.5rem}
+.attr-val{font-family:'Cinzel Decorative',serif;font-size:2rem;color:var(--gold3);}
+.attr-dice{font-size:.7rem;color:rgba(194,169,106,.4);margin-top:5px}
 
-/* RAÇAS */
-.race-intro{font-size:1rem;color:var(--parch2);margin-bottom:1rem;font-style:italic;line-height:1.5}
-.race-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.8rem}
-.race-card{border:1px solid var(--border);border-radius:2px;padding:1rem;background:rgba(0,0,0,.3);position:relative;transition:all .2s}
-.race-card.eligible{border-color:var(--gold2);background:rgba(184,134,11,.08);cursor:pointer}
-.race-card.ineligible{border-color:rgba(90,62,24,.4);opacity:.45}
-.race-name{font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--gold3);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
-.race-badge{font-size:.6rem;padding:1px 5px;border-radius:1px;font-family:'Cinzel',serif;font-weight:700}
-.badge-ok{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
-.badge-no{background:rgba(192,57,43,.15);color:#e74c3c;border:1px solid rgba(192,57,43,.3)}
-.race-adjusts{font-size:.8rem;color:var(--parch3);font-style:italic}
+.roll-btn{width:100%;background:var(--red);border:1px solid #7a1515;color:var(--parch);font-family:'Cinzel',serif;padding:1rem;cursor:pointer;font-weight:bold;text-transform:uppercase;}
+.roll-btn:disabled{opacity:.5}
+
+/* HISTÓRICO */
+.log-entry{background:rgba(0,0,0,.3);border:1px solid rgba(90,62,24,.4);padding:1rem;margin-bottom:1rem;position:relative;}
+.del-btn{position:absolute;top:10px;right:10px;background:none;border:1px solid rgba(139,26,26,.5);color:var(--red2);cursor:pointer;font-weight:bold;padding:2px 6px;}
+.log-attrs{display:flex;flex-wrap:wrap;gap:.5rem;margin:0.5rem 0}
+.log-attr{background:rgba(0,0,0,.3);border:1px solid var(--border);padding:4px 8px;font-size:0.8rem}
+.log-attr b{color:var(--gold2)}
 
 /* MODAL */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
-.modal-overlay.open{opacity:1;pointer-events:all}
-.modal{background:linear-gradient(160deg,#2e200a 0%,#1a1208 100%);border:1px solid var(--gold2);border-radius:3px;padding:2rem;max-width:520px;width:100%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.8)}
-.modal-close{position:absolute;top:.8rem;right:.8rem;background:none;border:1px solid rgba(194,169,106,.25);color:var(--parch3);width:28px;height:28px;cursor:pointer;font-family:'Cinzel',serif}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);display:none;align-items:center;justify-content:center;z-index:1000;}
+.modal-overlay.open{display:flex;}
+.modal{background:var(--panel2);border:1px solid var(--gold2);padding:2rem;max-width:500px;width:90%;position:relative;}
+.modal-close{position:absolute;top:10px;right:10px;background:none;border:none;color:var(--parch);font-size:1.5rem;cursor:pointer;}
 </style>
 </head>
 <body>
 
 <header>
-  <span class="h-ornament">✦ ✦ ✦</span>
-  <div class="h-title">Taverna dos Dados</div>
-  <div class="h-sub">AD&amp;D 2ª Edição · Geração de Atributos · 3d6</div>
-  <div class="h-rule"></div>
+  <div class="h-title">Taverna dos Dados</div>
 </header>
 
 <div class="info-bar">
-  <div class="status-wrap">
-    <div class="status-dot connecting" id="statusDot"></div>
-    <span class="status-txt" id="statusTxt">CONECTANDO...</span>
-  </div>
-  <div class="last-update">ÚLTIMA ATUALIZAÇÃO: <span id="lastUpdate">—</span></div>
+  <div class="status-wrap" style="display:flex; align-items:center; gap:10px">
+    <div class="status-dot online" id="statusDot"></div>
+    <span class="status-txt" id="statusTxt">CONECTADO</span>
+  </div>
+  <div style="font-size:0.7rem">ÚLTIMA ATUALIZAÇÃO: <span id="lastUpdate">—</span></div>
 </div>
 
 <div class="wrap">
-  <div class="panel">
-    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
-    <div class="panel-title">🎲 Rolar Atributos do Personagem</div>
-    <div class="fields-row">
-      <div class="field-group">
-        <label class="field-label" for="playerName">Seu Nome (jogador)</label>
-        <input class="txt-input" id="playerName" type="text" placeholder="Ex: Diego, Lucas..." maxlength="35"/>
-      </div>
-      <div class="field-group">
-        <label class="field-label" for="charName">Nome do Aventureiro</label>
-        <input class="txt-input" id="charName" type="text" placeholder="Ex: Thorin, Legolas..." maxlength="35"/>
-      </div>
-    </div>
-    <div class="attr-grid">
-      <div class="attr-card" id="card-for"><span class="attr-name">Força</span><span class="attr-val empty" id="val-for">—</span><div class="attr-dice" id="dice-for"></div></div>
-      <div class="attr-card" id="card-dex"><span class="attr-name">Destreza</span><span class="attr-val empty" id="val-dex">—</span><div class="attr-dice" id="dice-dex"></div></div>
-      <div class="attr-card" id="card-con"><span class="attr-name">Constituição</span><span class="attr-val empty" id="val-con">—</span><div class="attr-dice" id="dice-con"></div></div>
-      <div class="attr-card" id="card-int"><span class="attr-name">Inteligência</span><span class="attr-val empty" id="val-int">—</span><div class="attr-dice" id="dice-int"></div></div>
-      <div class="attr-card" id="card-sab"><span class="attr-name">Sabedoria</span><span class="attr-val empty" id="val-sab">—</span><div class="attr-dice" id="dice-sab"></div></div>
-      <div class="attr-card" id="card-car"><span class="attr-name">Carisma</span><span class="attr-val empty" id="val-car">—</span><div class="attr-dice" id="dice-car"></div></div>
-    </div>
-    <button class="roll-btn" id="rollBtn">⚄ Rolar 3d6 para os 6 Atributos</button>
-  </div>
+  <div class="panel">
+    <div class="panel-title">🎲 ROLAR ATRIBUTOS DO PERSONAGEM</div>
+    
+    <div class="fields-row">
+      <div class="field-group">
+        <label class="field-label">SEU NOME (JOGADOR)</label>
+        <input class="txt-input" id="playerName" type="text" placeholder="Ex: Diego, Lucas..."/>
+      </div>
+      <div class="field-group">
+        <label class="field-label">NOME DO AVENTUREIRO</label>
+        <input class="txt-input" id="charName" type="text" placeholder="Ex: Thorin, Legolas..."/>
+      </div>
+    </div>
 
-  <div class="panel" id="racePanel" style="display:none">
-    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
-    <div class="panel-title">📜 Raças Disponíveis</div>
-    <p class="race-intro" id="raceIntro"></p>
-    <div class="race-grid" id="raceGrid"></div>
-  </div>
+    <div class="attr-grid">
+      <div></div>
+      <div class="attr-card"><span class="attr-name">Força</span><span class="attr-val" id="val-for">—</span><div class="attr-dice" id="dice-for"></div></div>
+      <div></div>
+      
+      <div class="attr-card"><span class="attr-name">Destreza</span><span class="attr-val" id="val-dex">—</span><div class="attr-dice" id="dice-dex"></div></div>
+      <div style="display:flex; align-items:center; justify-content:center; color:rgba(184,134,11,.1); font-size:4rem">⚔</div>
+      <div class="attr-card"><span class="attr-name">Constituição</span><span class="attr-val" id="val-con">—</span><div class="attr-dice" id="dice-con"></div></div>
+      
+      <div class="attr-card"><span class="attr-name">Inteligência</span><span class="attr-val" id="val-int">—</span><div class="attr-dice" id="dice-int"></div></div>
+      <div class="attr-card"><span class="attr-name">Sabedoria</span><span class="attr-val" id="val-sab">—</span><div class="attr-dice" id="dice-sab"></div></div>
+      <div class="attr-card"><span class="attr-name">Carisma</span><span class="attr-val" id="val-car">—</span><div class="attr-dice" id="dice-car"></div></div>
+    </div>
 
-  <div class="panel">
-    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
-    <div class="panel-title">📜 Crônica dos Aventureiros<button class="clear-btn" id="clearBtn">Limpar Tudo</button></div>
-    <div class="log-list" id="logList"><div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div></div>
-  </div>
+    <button class="roll-btn" id="rollBtn">⚄ ROLAR 3D6 PARA OS 6 ATRIBUTOS</button>
+  </div>
+
+  <div class="panel" id="racePanel" style="display:none">
+    <div class="panel-title">📜 RAÇAS DISPONÍVEIS</div>
+    <div id="raceGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(200px, 1fr)); gap:1rem"></div>
+  </div>
+
+  <div class="panel">
+    <div class="panel-title">📜 CRÔNICA DOS AVENTUREIROS <button class="clear-btn" id="clearBtn" style="margin-left:auto; color:var(--red2); background:none; border:none; cursor:pointer">LIMPAR TUDO</button></div>
+    <div id="logList"></div>
+  </div>
 </div>
 
 <div class="modal-overlay" id="modalOverlay">
-  <div class="modal" id="modal">
-    <button class="modal-close" id="modalClose">✕</button>
-    <div id="modalContent"></div>
-  </div>
+  <div class="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div id="modalContent"></div>
+  </div>
 </div>
 
 <script type="module">
@@ -163,127 +120,66 @@ const firebaseConfig={apiKey:"AIzaSyCZ4S9TeljRTwuHBTkAgZp0iwRBZfiH7eQ",authDomai
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 const rollsRef=collection(db,"rolls");
+const MASTER_KEY = "LucasNoob";
 
-const SENHA_MESTRE = "LucasNoob";
-
-// STATUS
-function setStatus(s){const dot=document.getElementById('statusDot'),txt=document.getElementById('statusTxt');dot.className='status-dot';if(s==='online'){dot.classList.add('online');txt.textContent='CONECTADO — TEMPO REAL';}else if(s==='offline'){txt.textContent='SEM CONEXÃO';}else{dot.classList.add('connecting');txt.textContent='CONECTANDO...';}}
-function updateLastUpdate(){const n=new Date();document.getElementById('lastUpdate').textContent=n.toLocaleDateString('pt-BR')+' às '+n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-
-// DADOS DE RAÇA
+// RAÇAS
 const RACES=[
-  {id:'humano',   name:'Humano',    icon:'👤', adjusts:null,           adjustText:'Sem ajustes raciais',            reqs:{for:[3,18],dex:[3,18],con:[3,18],int:[3,18],sab:[3,18],car:[3,18]}},
-  {id:'anao',     name:'Anão',      icon:'⛏️', adjusts:{con:1,car:-1}, adjustText:'+1 Constituição / −1 Carisma',   reqs:{for:[8,18],dex:[3,17],con:[11,18],int:[3,18],sab:[3,18],car:[3,17]}},
-  {id:'elfo',     name:'Elfo',      icon:'🏹', adjusts:{dex:1,con:-1}, adjustText:'+1 Destreza / −1 Constituição',  reqs:{for:[3,18],dex:[6,18],con:[7,18],int:[8,18],sab:[3,18],car:[8,18]}},
-  {id:'gnomo',    name:'Gnomo',     icon:'🔮', adjusts:{int:1,sab:-1}, adjustText:'+1 Inteligência / −1 Sabedoria', reqs:{for:[6,18],dex:[3,18],con:[8,18],int:[6,18],sab:[3,18],car:[3,18]}},
-  {id:'meio-elfo',name:'Meio-Elfo', icon:'🌙', adjusts:null,           adjustText:'Sem ajustes raciais',            reqs:{for:[3,18],dex:[6,18],con:[6,18],int:[4,18],sab:[3,18],car:[3,18]}},
-  {id:'halfling', name:'Halfling',  icon:'🍃', adjusts:{dex:1,for:-1}, adjustText:'+1 Destreza / −1 Força',         reqs:{for:[7,18],dex:[7,18],con:[10,18],int:[6,18],sab:[3,17],car:[3,18]}}
+  {name:'Humano', icon:'👤', adjusts:null, reqs:{for:[3,18],dex:[3,18],con:[3,18],int:[3,18],sab:[3,18],car:[3,18]}},
+  {name:'Anão', icon:'⛏️', adjusts:{con:1,car:-1}, reqs:{for:[8,18],dex:[3,17],con:[11,18],int:[3,18],sab:[3,18],car:[3,17]}},
+  {name:'Elfo', icon:'🏹', adjusts:{dex:1,con:-1}, reqs:{for:[3,18],dex:[6,18],con:[7,18],int:[8,18],sab:[3,18],car:[8,18]}},
+  {name:'Gnomo', icon:'🔮', adjusts:{int:1,sab:-1}, reqs:{for:[6,18],dex:[3,18],con:[8,18],int:[6,18],sab:[3,18],car:[3,18]}},
+  {name:'Halfling', icon:'🍃', adjusts:{dex:1,for:-1}, reqs:{for:[7,18],dex:[7,18],con:[10,18],int:[6,18],sab:[3,17],car:[3,18]}}
 ];
+
 const ATTR_KEYS=['for','dex','con','int','sab','car'];
 const ATTR_NAMES={for:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',sab:'Sabedoria',car:'Carisma'};
 
-function checkRace(race,attrs){const f=[];for(const k of ATTR_KEYS){const[mn,mx]=race.reqs[k];if(attrs[k]<mn||attrs[k]>mx)f.push({key:k,val:attrs[k],min:mn,max:mx});}return{eligible:f.length===0,failures:f};}
-function applyAdjust(race,attrs){const result={};for(const k of ATTR_KEYS){const delta=(race.adjusts&&race.adjusts[k])||0;result[k]=attrs[k]+delta;}return result;}
-function d6(){return Math.floor(Math.random()*6)+1;}
-function roll3d6(){const d=[d6(),d6(),d6()];return{total:d.reduce((a,b)=>a+b,0),dice:d};}
-function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
-function fmtDT(ts){const d=new Date(ts);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+// FUNÇÕES
+const d6=()=>Math.floor(Math.random()*6)+1;
+const roll3d6=()=>{const d=[d6(),d6(),d6()]; return{total:d.reduce((a,b)=>a+b,0), dice:d};};
 
-// FUNÇÃO GLOBAL DE EXCLUIR UM SÓ
 window.excluirAventureiro = async (id) => {
-  const s = prompt('🔐 Senha do Mestre para expulsar este aventureiro:');
-  if(s === null) return;
-  if(s !== SENHA_MESTRE){ alert('❌ Senha incorreta!'); return; }
-  try { await deleteDoc(doc(db, "rolls", id)); } 
-  catch (e) { alert('Erro: ' + e.message); }
+  const s = prompt('🔐 Senha do Mestre:');
+  if(s === MASTER_KEY) {
+    try { await deleteDoc(doc(db, "rolls", id)); } 
+    catch (e) { alert('Erro: ' + e.message); }
+  } else if (s !== null) { alert('Senha incorreta!'); }
 };
 
-// MODAL
-function openModal(race,attrs){
-  const final=applyAdjust(race,attrs);
-  const content=document.getElementById('modalContent');
-  content.innerHTML=`<h2 style="color:var(--gold3); font-family:'Cinzel Decorative'; margin-bottom:1rem">${race.icon} ${race.name}</h2><p style="font-style:italic; margin-bottom:1rem">${race.adjustText}</p><div style="display:grid; grid-template-columns:1fr 1fr; gap:10px">${ATTR_KEYS.map(k=>`<div><strong>${ATTR_NAMES[k]}:</strong> ${final[k]}</div>`).join('')}</div>`;
-  document.getElementById('modalOverlay').classList.add('open');
-}
-document.getElementById('modalClose').addEventListener('click',()=>document.getElementById('modalOverlay').classList.remove('open'));
-
-// RENDER LOG
-let freshId=null;
-function renderLog(entries){
-  const list=document.getElementById('logList');list.innerHTML='';
-  if(!entries||entries.length===0){list.innerHTML='<div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div>';return;}
-  for(const entry of entries){
-    const isFresh=entry.id===freshId;
-    const eligible=RACES.filter(r=>checkRace(r,entry.attrs).eligible);
-    const div=document.createElement('div');div.className=`log-entry ${isFresh?'fresh':''}`;
-    const attrHtml=ATTR_KEYS.map(k=>`<span class="log-attr"><span>${ATTR_NAMES[k].slice(0,3)}</span><span>${entry.attrs[k]}</span></span>`).join('');
-    div.innerHTML=`
-      <button class="del-btn" onclick="excluirAventureiro('${entry.id}')">✕</button>
-      <div class="log-header"><span class="log-char">⚔ ${esc(entry.charName)}</span><span class="log-time">${fmtDT(entry.ts)}</span></div>
-      <div class="log-player">👤 Jogador: ${esc(entry.playerName)}</div>
-      <div class="log-attrs">${attrHtml}</div>
-      <div class="log-races"><strong>Raças possíveis:</strong> ${eligible.map(r=>r.name).join(', ')||'Nenhuma'}</div>`;
-    list.appendChild(div);
-  }
-}
-
-// FIRESTORE LISTENER
-const q=query(rollsRef,orderBy('ts','desc'));
-onSnapshot(q,(snapshot)=>{setStatus('online');updateLastUpdate();renderLog(snapshot.docs.map(d=>({id:d.id,...d.data()})));},
-(err)=>{console.error('Firestore:',err);setStatus('offline');});
-
-// ROLL
-document.getElementById('rollBtn').addEventListener('click',async()=>{
-  const pField = document.getElementById('playerName');
-  const cField = document.getElementById('charName');
-  const playerName = pField.value.trim();
-  const charName = cField.value.trim();
-
-  // --- BLOQUEIO SE VAZIO ---
-  if(!playerName || !charName){
-    alert("⚔️ Por favor, preencha o Nome do Jogador e do Aventureiro antes de rolar!");
-    if(!playerName) pField.focus(); else cField.focus();
-    return;
-  }
-
-  const btn=document.getElementById('rollBtn');
-  btn.disabled=true;btn.classList.add('rolling');
-  for(const k of ATTR_KEYS){document.getElementById('val-'+k).textContent='?';document.getElementById('card-'+k).className='attr-card';document.getElementById('dice-'+k).textContent='';}
-  await new Promise(r=>setTimeout(r,50));
-  const rolls={},dd={};
-  for(const k of ATTR_KEYS){const r=roll3d6();rolls[k]=r.total;dd[k]=r.dice;}
-  for(let f=0;f<10;f++){for(const k of ATTR_KEYS)document.getElementById('val-'+k).textContent=Math.floor(Math.random()*16)+3;await new Promise(r=>setTimeout(r,45));}
-  for(const k of ATTR_KEYS){const el=document.getElementById('val-'+k);el.textContent=rolls[k];el.className='attr-val';document.getElementById('card-'+k).className='attr-card rolled';document.getElementById('dice-'+k).textContent=`[${dd[k].join(' + ')}]`;}
-  
-  try{const ref=await addDoc(rollsRef,{playerName,charName,attrs:rolls,ts:Date.now()});freshId=ref.id;}
-  catch(e){console.error(e);alert('Erro ao salvar: '+e.message);}
-
-  // MOSTRAR RAÇAS
-  document.getElementById('racePanel').style.display='block';
-  const elRaces=RACES.filter(r=>checkRace(r,rolls).eligible);
-  document.getElementById('raceIntro').textContent=`Com esses atributos, as raças disponíveis são: ${elRaces.map(r=>r.name).join(', ')||'nenhuma'}.`;
-  const grid=document.getElementById('raceGrid'); grid.innerHTML='';
-  for(const race of RACES){
-    const{eligible:ok}=checkRace(race,rolls);
-    const card=document.createElement('div');
-    card.className=`race-card ${ok?'eligible':'ineligible'}`;
-    card.innerHTML=`<div class="race-name">${race.icon} ${race.name}<span class="race-badge ${ok?'badge-ok':'badge-no'}">${ok?'APTO':'INAPTO'}</span></div><div class="race-adjusts">${race.adjustText}</div>`;
-    if(ok) card.addEventListener('click',()=>openModal(race,rolls));
-    grid.appendChild(card);
-  }
-  document.getElementById('racePanel').scrollIntoView({behavior:'smooth',block:'start'});
-  btn.classList.remove('rolling');btn.disabled=false;
+// LISTENER
+onSnapshot(query(rollsRef, orderBy('ts','desc')), (snap) => {
+  const list = document.getElementById('logList'); list.innerHTML = '';
+  snap.forEach(d => {
+    const data = d.data();
+    const div = document.createElement('div'); div.className = 'log-entry';
+    div.innerHTML = `
+      <button class="del-btn" onclick="excluirAventureiro('${d.id}')">✕</button>
+      <b>⚔ ${data.charName}</b> (Jogador: ${data.playerName})<br>
+      <div class="log-attrs">${ATTR_KEYS.map(k=>`<span class="log-attr">${k.toUpperCase()}: <b>${data.attrs[k]}</b></span>`).join('')}</div>
+    `;
+    list.appendChild(div);
+  });
+  document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString();
 });
 
-// LIMPAR TUDO
-document.getElementById('clearBtn').addEventListener('click',async()=>{
-  const s=prompt('🔐 Senha do Mestre para LIMPAR TUDO:');
-  if(s===null)return;
-  if(s!==SENHA_MESTRE){alert('❌ Senha incorreta!');return;}
-  if(!confirm('Apagar TODA a crônica?'))return;
-  try{const sn=await getDocs(rollsRef);await Promise.all(sn.docs.map(d=>deleteDoc(doc(db,'rolls',d.id))));}
-  catch(e){alert('Erro: '+e.message);}
+// BOTÃO ROLL
+document.getElementById('rollBtn').addEventListener('click', async () => {
+  const p = document.getElementById('playerName').value.trim();
+  const c = document.getElementById('charName').value.trim();
+  if(!p || !c) return alert("Preencha os nomes!");
+
+  const rolls = {}; const dd = {};
+  ATTR_KEYS.forEach(k => { const r = roll3d6(); rolls[k] = r.total; dd[k] = r.dice; });
+
+  ATTR_KEYS.forEach(k => {
+    document.getElementById('val-'+k).textContent = rolls[k];
+    document.getElementById('dice-'+k).textContent = `[${dd[k].join('+')}]`;
+  });
+
+  await addDoc(rollsRef, {playerName:p, charName:c, attrs:rolls, ts:Date.now()});
 });
+
+document.getElementById('modalClose').onclick = () => document.getElementById('modalOverlay').classList.remove('open');
 </script>
 </body>
 </html>
