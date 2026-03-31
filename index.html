@@ -51,24 +51,71 @@ header::before{content:'';position:absolute;inset:0;background:linear-gradient(1
 .attr-val{font-family:'Cinzel Decorative',serif;font-size:2.2rem;font-weight:900;color:var(--gold3);line-height:1;text-shadow:0 0 20px rgba(240,192,64,.4);display:block;min-height:2.5rem}
 .attr-val.empty{color:rgba(194,169,106,.2);font-size:1.5rem}
 .attr-dice{font-size:.72rem;color:rgba(194,169,106,.4);margin-top:.25rem;font-style:italic}
+
+/* RACE CARDS */
 .race-intro{font-size:1rem;color:var(--parch2);margin-bottom:1rem;font-style:italic;line-height:1.5}
-.race-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem}
+.race-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.8rem}
 @media(max-width:700px){.race-grid{grid-template-columns:1fr 1fr}}
 @media(max-width:420px){.race-grid{grid-template-columns:1fr}}
-.race-card{border:1px solid var(--border);border-radius:2px;padding:1rem;background:rgba(0,0,0,.3);position:relative;overflow:hidden}
-.race-card.eligible{border-color:var(--gold2);background:rgba(184,134,11,.08)}
+.race-card{border:1px solid var(--border);border-radius:2px;padding:1rem;background:rgba(0,0,0,.3);position:relative;overflow:hidden;transition:all .2s}
+.race-card.eligible{border-color:var(--gold2);background:rgba(184,134,11,.08);cursor:pointer}
+.race-card.eligible:hover{border-color:var(--gold3);background:rgba(184,134,11,.15);transform:translateY(-2px);box-shadow:0 6px 20px rgba(184,134,11,.25)}
 .race-card.eligible::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),transparent)}
-.race-card.ineligible{border-color:rgba(90,62,24,.4);opacity:.5}
+.race-card.ineligible{border-color:rgba(90,62,24,.4);opacity:.45}
 .race-card.human-card{border-color:var(--gold);background:rgba(184,134,11,.05)}
-.race-name{font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--gold3);margin-bottom:.5rem;display:flex;align-items:center;gap:.4rem}
+.race-name{font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--gold3);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
 .race-card.ineligible .race-name{color:var(--parch3)}
 .race-badge{font-size:.6rem;padding:1px 5px;border-radius:1px;font-family:'Cinzel',serif;letter-spacing:.05em;font-weight:700}
 .badge-ok{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
 .badge-no{background:rgba(192,57,43,.15);color:#e74c3c;border:1px solid rgba(192,57,43,.3)}
-.race-adjusts{font-size:.82rem;color:var(--parch3);font-style:italic;margin-bottom:.5rem}
-.req-row{display:flex;justify-content:space-between;font-size:.78rem;padding:1px 0}
-.req-label{color:rgba(194,169,106,.6)}.req-range{font-family:'Cinzel',serif;font-size:.72rem}.req-ok{color:#4ade80}.req-fail{color:#e74c3c}
-.fail-reason{font-size:.75rem;color:#e74c3c;margin-top:.4rem;font-style:italic}
+.race-adjusts{font-size:.8rem;color:var(--parch3);font-style:italic;margin-bottom:.5rem}
+.req-row{display:flex;justify-content:space-between;font-size:.76rem;padding:1px 0}
+.req-label{color:rgba(194,169,106,.6)}.req-range{font-family:'Cinzel',serif;font-size:.7rem}
+.req-ok{color:#4ade80}.req-fail{color:#e74c3c}
+.fail-reason{font-size:.74rem;color:#e74c3c;margin-top:.4rem;font-style:italic}
+.click-hint{font-size:.72rem;color:var(--gold2);margin-top:.6rem;text-align:center;opacity:.7;font-style:italic}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:linear-gradient(160deg,#2e200a 0%,#1a1208 100%);border:1px solid var(--gold2);border-radius:3px;padding:2rem;max-width:520px;width:100%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 40px rgba(184,134,11,.15);transform:translateY(20px) scale(.97);transition:transform .25s}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal::before{content:'';position:absolute;top:4px;left:4px;right:4px;bottom:4px;border:1px solid rgba(184,134,11,.12);border-radius:2px;pointer-events:none}
+.modal-close{position:absolute;top:.8rem;right:.8rem;background:none;border:1px solid rgba(194,169,106,.25);border-radius:2px;color:var(--parch3);font-size:1rem;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Cinzel',serif}
+.modal-close:hover{border-color:var(--red2);color:var(--red2)}
+.modal-race-header{text-align:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.modal-race-icon{font-size:2.5rem;display:block;margin-bottom:.4rem}
+.modal-race-name{font-family:'Cinzel Decorative',serif;font-size:1.5rem;font-weight:700;color:var(--gold3);text-shadow:0 0 20px rgba(240,192,64,.3)}
+.modal-race-adjust{font-size:.9rem;color:var(--parch3);font-style:italic;margin-top:.3rem}
+.modal-section-title{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold2);margin-bottom:.7rem}
+.modal-attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1.4rem}
+.modal-attr{background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:2px;padding:.6rem .4rem;text-align:center;position:relative}
+.modal-attr.boosted{border-color:#4ade80;background:rgba(74,222,128,.06)}
+.modal-attr.penalized{border-color:#e74c3c;background:rgba(231,76,60,.06)}
+.modal-attr-name{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3);display:block;margin-bottom:.3rem}
+.modal-attr-val{font-family:'Cinzel Decorative',serif;font-size:1.7rem;font-weight:900;color:var(--gold3);display:block;line-height:1}
+.modal-attr.boosted .modal-attr-val{color:#4ade80;text-shadow:0 0 12px rgba(74,222,128,.4)}
+.modal-attr.penalized .modal-attr-val{color:#e74c3c;text-shadow:0 0 12px rgba(231,76,60,.4)}
+.modal-attr-delta{font-size:.68rem;font-family:'Cinzel',serif;font-weight:700;margin-top:.2rem;display:block}
+.modal-attr.boosted .modal-attr-delta{color:#4ade80}
+.modal-attr.penalized .modal-attr-delta{color:#e74c3c}
+.modal-attr-delta.neutral{color:transparent}
+.modal-compare{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;padding:.8rem 1rem;margin-bottom:1rem}
+.compare-row{display:flex;justify-content:space-between;align-items:center;padding:.3rem 0;border-bottom:1px solid rgba(90,62,24,.3);font-size:.85rem}
+.compare-row:last-child{border-bottom:none}
+.compare-attr-name{color:var(--parch3);min-width:100px}
+.compare-vals{display:flex;align-items:center;gap:.6rem;font-family:'Cinzel',serif;font-size:.8rem}
+.compare-base{color:rgba(194,169,106,.5)}
+.compare-arrow{color:var(--border2)}
+.compare-final{font-weight:700}
+.compare-final.up{color:#4ade80}
+.compare-final.down{color:#e74c3c}
+.compare-final.same{color:var(--gold3)}
+.compare-tag{font-size:.62rem;padding:1px 4px;border-radius:1px;font-weight:700}
+.tag-up{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
+.tag-down{background:rgba(231,76,60,.15);color:#e74c3c;border:1px solid rgba(231,76,60,.3)}
+
+/* LOG */
 .log-list{display:flex;flex-direction:column;gap:.6rem;max-height:450px;overflow-y:auto;padding-right:4px}
 .log-list::-webkit-scrollbar{width:4px}.log-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
 .log-entry{background:rgba(0,0,0,.3);border:1px solid rgba(90,62,24,.4);border-radius:2px;padding:.75rem 1rem;animation:fadeIn .4s ease}
@@ -89,12 +136,14 @@ header::before{content:'';position:absolute;inset:0;background:linear-gradient(1
 </style>
 </head>
 <body>
+
 <header>
   <span class="h-ornament">✦ ✦ ✦</span>
   <div class="h-title">Taverna dos Dados</div>
   <div class="h-sub">AD&amp;D 2ª Edição · Geração de Atributos · 3d6</div>
   <div class="h-rule"></div>
 </header>
+
 <div class="info-bar">
   <div class="status-wrap">
     <div class="status-dot connecting" id="statusDot"></div>
@@ -102,7 +151,9 @@ header::before{content:'';position:absolute;inset:0;background:linear-gradient(1
   </div>
   <div class="last-update">ÚLTIMA ATUALIZAÇÃO: <span id="lastUpdate">—</span></div>
 </div>
+
 <div class="wrap">
+  <!-- ROLAGEM -->
   <div class="panel">
     <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
     <div class="panel-title">🎲 Rolar Atributos do Personagem</div>
@@ -126,42 +177,191 @@ header::before{content:'';position:absolute;inset:0;background:linear-gradient(1
     </div>
     <button class="roll-btn" id="rollBtn">⚄ Rolar 3d6 para os 6 Atributos</button>
   </div>
+
+  <!-- RAÇAS -->
   <div class="panel" id="racePanel" style="display:none">
     <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
     <div class="panel-title">📜 Raças Disponíveis</div>
     <p class="race-intro" id="raceIntro"></p>
     <div class="race-grid" id="raceGrid"></div>
   </div>
+
+  <!-- HISTÓRICO -->
   <div class="panel">
     <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
     <div class="panel-title">📜 Crônica dos Aventureiros<button class="clear-btn" id="clearBtn">Limpar</button></div>
     <div class="log-list" id="logList"><div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div></div>
   </div>
 </div>
+
+<!-- MODAL DE RAÇA -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import{getFirestore,collection,addDoc,onSnapshot,query,orderBy,deleteDoc,doc,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
 const firebaseConfig={apiKey:"AIzaSyCZ4S9TeljRTwuHBTkAgZp0iwRBZfiH7eQ",authDomain:"taverna-dos-dados-rpg.firebaseapp.com",projectId:"taverna-dos-dados-rpg",storageBucket:"taverna-dos-dados-rpg.firebasestorage.app",messagingSenderId:"879653742565",appId:"1:879653742565:web:217907eed0b10e5454310c"};
 const app=initializeApp(firebaseConfig);
 const db=getFirestore(app);
 const rollsRef=collection(db,"rolls");
+
+// STATUS
 function setStatus(s){const dot=document.getElementById('statusDot'),txt=document.getElementById('statusTxt');dot.className='status-dot';if(s==='online'){dot.classList.add('online');txt.textContent='CONECTADO — TEMPO REAL';}else if(s==='offline'){txt.textContent='SEM CONEXÃO';}else{dot.classList.add('connecting');txt.textContent='CONECTANDO...';}}
 function updateLastUpdate(){const n=new Date();document.getElementById('lastUpdate').textContent=n.toLocaleDateString('pt-BR')+' às '+n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-const RACES=[{id:'humano',name:'Humano',icon:'👤',adjusts:null,adjustText:'Sem ajustes raciais',reqs:{for:[3,18],dex:[3,18],con:[3,18],int:[3,18],sab:[3,18],car:[3,18]}},{id:'anao',name:'Anão',icon:'⛏️',adjusts:{con:1,car:-1},adjustText:'+1 Constituição / −1 Carisma',reqs:{for:[8,18],dex:[3,17],con:[11,18],int:[3,18],sab:[3,18],car:[3,17]}},{id:'elfo',name:'Elfo',icon:'🏹',adjusts:{dex:1,con:-1},adjustText:'+1 Destreza / −1 Constituição',reqs:{for:[3,18],dex:[6,18],con:[7,18],int:[8,18],sab:[3,18],car:[8,18]}},{id:'gnomo',name:'Gnomo',icon:'🔮',adjusts:{int:1,sab:-1},adjustText:'+1 Inteligência / −1 Sabedoria',reqs:{for:[6,18],dex:[3,18],con:[8,18],int:[6,18],sab:[3,18],car:[3,18]}},{id:'meio-elfo',name:'Meio-Elfo',icon:'🌙',adjusts:null,adjustText:'Sem ajustes raciais',reqs:{for:[3,18],dex:[6,18],con:[6,18],int:[4,18],sab:[3,18],car:[3,18]}},{id:'halfling',name:'Halfling',icon:'🍃',adjusts:{dex:1,for:-1},adjustText:'+1 Destreza / −1 Força',reqs:{for:[7,18],dex:[7,18],con:[10,18],int:[6,18],sab:[3,17],car:[3,18]}}];
+
+// DADOS DE RAÇA
+const RACES=[
+  {id:'humano',   name:'Humano',    icon:'👤', adjusts:null,           adjustText:'Sem ajustes raciais',            reqs:{for:[3,18],dex:[3,18],con:[3,18],int:[3,18],sab:[3,18],car:[3,18]}},
+  {id:'anao',     name:'Anão',      icon:'⛏️', adjusts:{con:1,car:-1}, adjustText:'+1 Constituição / −1 Carisma',   reqs:{for:[8,18],dex:[3,17],con:[11,18],int:[3,18],sab:[3,18],car:[3,17]}},
+  {id:'elfo',     name:'Elfo',      icon:'🏹', adjusts:{dex:1,con:-1}, adjustText:'+1 Destreza / −1 Constituição',  reqs:{for:[3,18],dex:[6,18],con:[7,18],int:[8,18],sab:[3,18],car:[8,18]}},
+  {id:'gnomo',    name:'Gnomo',     icon:'🔮', adjusts:{int:1,sab:-1}, adjustText:'+1 Inteligência / −1 Sabedoria', reqs:{for:[6,18],dex:[3,18],con:[8,18],int:[6,18],sab:[3,18],car:[3,18]}},
+  {id:'meio-elfo',name:'Meio-Elfo', icon:'🌙', adjusts:null,           adjustText:'Sem ajustes raciais',            reqs:{for:[3,18],dex:[6,18],con:[6,18],int:[4,18],sab:[3,18],car:[3,18]}},
+  {id:'halfling', name:'Halfling',  icon:'🍃', adjusts:{dex:1,for:-1}, adjustText:'+1 Destreza / −1 Força',         reqs:{for:[7,18],dex:[7,18],con:[10,18],int:[6,18],sab:[3,17],car:[3,18]}}
+];
 const ATTR_KEYS=['for','dex','con','int','sab','car'];
 const ATTR_NAMES={for:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',sab:'Sabedoria',car:'Carisma'};
-function checkRace(race,attrs){const f=[];for(const k of ATTR_KEYS){const[min,max]=race.reqs[k];if(attrs[k]<min||attrs[k]>max)f.push({key:k,val:attrs[k],min,max});}return{eligible:f.length===0,failures:f};}
+const ATTR_SHORT={for:'For',dex:'Dex',con:'Con',int:'Int',sab:'Sab',car:'Car'};
+
+function checkRace(race,attrs){const f=[];for(const k of ATTR_KEYS){const[mn,mx]=race.reqs[k];if(attrs[k]<mn||attrs[k]>mx)f.push({key:k,val:attrs[k],min:mn,max:mx});}return{eligible:f.length===0,failures:f};}
+
+function applyAdjust(race,attrs){
+  const result={};
+  for(const k of ATTR_KEYS){
+    const delta=(race.adjusts&&race.adjusts[k])||0;
+    result[k]=attrs[k]+delta;
+  }
+  return result;
+}
+
+// UTILS
 function d6(){return Math.floor(Math.random()*6)+1;}
 function roll3d6(){const d=[d6(),d6(),d6()];return{total:d.reduce((a,b)=>a+b,0),dice:d};}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function fmtDT(ts){const d=new Date(ts);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
-function renderRacePanel(attrs,charName){const panel=document.getElementById('racePanel'),grid=document.getElementById('raceGrid'),intro=document.getElementById('raceIntro');panel.style.display='block';const el=RACES.filter(r=>checkRace(r,attrs).eligible);intro.textContent=`Com os atributos de ${charName}, as raças disponíveis são: ${el.map(r=>r.name).join(', ')||'nenhuma'}.`;grid.innerHTML='';for(const race of RACES){const{eligible:ok,failures}=checkRace(race,attrs);const isH=race.id==='humano';const card=document.createElement('div');card.className=`race-card ${ok?(isH?'human-card eligible':'eligible'):'ineligible'}`;const rq=isH?`<div class="req-row"><span class="req-label" style="color:rgba(240,192,64,.6)">Sem restrições de atributo</span></div>`:ATTR_KEYS.filter(k=>!(race.reqs[k][0]===3&&race.reqs[k][1]===18)).map(k=>{const[min,max]=race.reqs[k],val=attrs[k],pass=val>=min&&val<=max;return`<div class="req-row"><span class="req-label">${ATTR_NAMES[k]}</span><span class="req-range ${pass?'req-ok':'req-fail'}">${min}–${max} (${val})</span></div>`;}).join('');const fh=!ok&&failures.length?`<div class="fail-reason">✗ ${failures.map(f=>`${ATTR_NAMES[f.key]} (${f.val} < ${f.min})`).join(', ')}</div>`:'';card.innerHTML=`<div class="race-name">${race.icon} ${race.name}<span class="race-badge ${ok?'badge-ok':'badge-no'}">${ok?'APTO':'INAPTO'}</span></div><div class="race-adjusts">${race.adjustText}</div>${rq}${fh}`;grid.appendChild(card);}panel.scrollIntoView({behavior:'smooth',block:'start'});}
+
+// MODAL
+let currentAttrs=null;
+
+function openModal(race,attrs){
+  const final=applyAdjust(race,attrs);
+  const content=document.getElementById('modalContent');
+
+  // Build attr cards
+  let attrCards='';
+  for(const k of ATTR_KEYS){
+    const delta=(race.adjusts&&race.adjusts[k])||0;
+    const cls=delta>0?'boosted':delta<0?'penalized':'';
+    const deltaHtml=delta!==0?`<span class="modal-attr-delta">${delta>0?'+'+delta:delta}</span>`:`<span class="modal-attr-delta neutral">—</span>`;
+    attrCards+=`<div class="modal-attr ${cls}"><span class="modal-attr-name">${ATTR_NAMES[k]}</span><span class="modal-attr-val">${final[k]}</span>${deltaHtml}</div>`;
+  }
+
+  // Build comparison table — only show attrs that change OR all
+  let compareRows='';
+  for(const k of ATTR_KEYS){
+    const delta=(race.adjusts&&race.adjusts[k])||0;
+    const base=attrs[k];
+    const fin=final[k];
+    const cls=delta>0?'up':delta<0?'down':'same';
+    const tag=delta>0?`<span class="compare-tag tag-up">+${delta}</span>`:delta<0?`<span class="compare-tag tag-down">${delta}</span>`:'';
+    compareRows+=`<div class="compare-row"><span class="compare-attr-name">${ATTR_NAMES[k]}</span><span class="compare-vals"><span class="compare-base">${base}</span><span class="compare-arrow">→</span><span class="compare-final ${cls}">${fin}</span>${tag}</span></div>`;
+  }
+
+  content.innerHTML=`
+    <div class="modal-race-header">
+      <span class="modal-race-icon">${race.icon}</span>
+      <div class="modal-race-name">${race.name}</div>
+      <div class="modal-race-adjust">${race.adjustText}</div>
+    </div>
+    <div class="modal-section-title">Atributos Finais como ${race.name}</div>
+    <div class="modal-attr-grid">${attrCards}</div>
+    <div class="modal-section-title">Comparação com Atributos Rolados</div>
+    <div class="modal-compare">${compareRows}</div>`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+}
+
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+document.getElementById('modalClose').addEventListener('click',closeModal);
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// RENDER RACE PANEL
+function renderRacePanel(attrs,charName){
+  currentAttrs=attrs;
+  const panel=document.getElementById('racePanel'),grid=document.getElementById('raceGrid'),intro=document.getElementById('raceIntro');
+  panel.style.display='block';
+  const el=RACES.filter(r=>checkRace(r,attrs).eligible);
+  intro.textContent=`Com os atributos de ${charName}, as raças disponíveis são: ${el.map(r=>r.name).join(', ')||'nenhuma'}.`;
+  grid.innerHTML='';
+  for(const race of RACES){
+    const{eligible:ok,failures}=checkRace(race,attrs);
+    const isH=race.id==='humano';
+    const card=document.createElement('div');
+    card.className=`race-card ${ok?(isH?'human-card eligible':'eligible'):'ineligible'}`;
+    const rq=isH?`<div class="req-row"><span class="req-label" style="color:rgba(240,192,64,.6)">Sem restrições de atributo</span></div>`:ATTR_KEYS.filter(k=>!(race.reqs[k][0]===3&&race.reqs[k][1]===18)).map(k=>{const[mn,mx]=race.reqs[k],val=attrs[k],pass=val>=mn&&val<=mx;return`<div class="req-row"><span class="req-label">${ATTR_NAMES[k]}</span><span class="req-range ${pass?'req-ok':'req-fail'}">${mn}–${mx} (${val})</span></div>`;}).join('');
+    const fh=!ok&&failures.length?`<div class="fail-reason">✗ ${failures.map(f=>`${ATTR_NAMES[f.key]} (${f.val} < ${f.min})`).join(', ')}</div>`:'';
+    const hint=ok?`<div class="click-hint">🔍 Clique para ver atributos finais</div>`:'';
+    card.innerHTML=`<div class="race-name">${race.icon} ${race.name}<span class="race-badge ${ok?'badge-ok':'badge-no'}">${ok?'APTO':'INAPTO'}</span></div><div class="race-adjusts">${race.adjustText}</div>${rq}${fh}${hint}`;
+    if(ok)card.addEventListener('click',()=>openModal(race,attrs));
+    grid.appendChild(card);
+  }
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// RENDER LOG
 let freshId=null;
-function renderLog(entries){const list=document.getElementById('logList');list.innerHTML='';if(!entries||entries.length===0){list.innerHTML='<div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div>';return;}for(const entry of entries){const isFresh=entry.id===freshId;const eligible=RACES.filter(r=>checkRace(r,entry.attrs).eligible);const div=document.createElement('div');div.className=`log-entry ${isFresh?'fresh':''}`;const attrHtml=ATTR_KEYS.map(k=>`<span class="log-attr"><span>${ATTR_NAMES[k].slice(0,3)}</span><span>${entry.attrs[k]}</span></span>`).join('');div.innerHTML=`<div class="log-header"><span class="log-char">⚔ ${esc(entry.charName||'Sem nome')}</span><span class="log-time">${fmtDT(entry.ts)}</span></div><div class="log-player">👤 Jogador: ${esc(entry.playerName||'?')}</div><div class="log-attrs">${attrHtml}</div><div class="log-races"><strong>Raças possíveis:</strong> ${eligible.map(r=>r.name).join(', ')||'Nenhuma'}</div>`;list.appendChild(div);if(isFresh)setTimeout(()=>div.classList.remove('fresh'),3000);}}
+function renderLog(entries){
+  const list=document.getElementById('logList');list.innerHTML='';
+  if(!entries||entries.length===0){list.innerHTML='<div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div>';return;}
+  for(const entry of entries){
+    const isFresh=entry.id===freshId;
+    const eligible=RACES.filter(r=>checkRace(r,entry.attrs).eligible);
+    const div=document.createElement('div');div.className=`log-entry ${isFresh?'fresh':''}`;
+    const attrHtml=ATTR_KEYS.map(k=>`<span class="log-attr"><span>${ATTR_NAMES[k].slice(0,3)}</span><span>${entry.attrs[k]}</span></span>`).join('');
+    div.innerHTML=`<div class="log-header"><span class="log-char">⚔ ${esc(entry.charName||'Sem nome')}</span><span class="log-time">${fmtDT(entry.ts)}</span></div><div class="log-player">👤 Jogador: ${esc(entry.playerName||'?')}</div><div class="log-attrs">${attrHtml}</div><div class="log-races"><strong>Raças possíveis:</strong> ${eligible.map(r=>r.name).join(', ')||'Nenhuma'}</div>`;
+    list.appendChild(div);
+    if(isFresh)setTimeout(()=>div.classList.remove('fresh'),3000);
+  }
+}
+
+// FIRESTORE LISTENER
 const q=query(rollsRef,orderBy('ts','desc'));
-onSnapshot(q,(snapshot)=>{setStatus('online');updateLastUpdate();const entries=snapshot.docs.map(d=>({id:d.id,...d.data()}));renderLog(entries);},(err)=>{console.error('Firestore:',err);setStatus('offline');});
-document.getElementById('rollBtn').addEventListener('click',async()=>{const playerName=document.getElementById('playerName').value.trim()||'Jogador';const charName=document.getElementById('charName').value.trim()||'Aventureiro';const btn=document.getElementById('rollBtn');btn.disabled=true;btn.classList.add('rolling');for(const key of ATTR_KEYS){document.getElementById('val-'+key).textContent='?';document.getElementById('card-'+key).className='attr-card';document.getElementById('dice-'+key).textContent='';}await new Promise(r=>setTimeout(r,50));const rolls={},diceDetails={};for(const key of ATTR_KEYS){const r=roll3d6();rolls[key]=r.total;diceDetails[key]=r.dice;}for(let f=0;f<10;f++){for(const key of ATTR_KEYS)document.getElementById('val-'+key).textContent=Math.floor(Math.random()*16)+3;await new Promise(r=>setTimeout(r,45));}for(const key of ATTR_KEYS){const el=document.getElementById('val-'+key);el.textContent=rolls[key];el.className='attr-val';document.getElementById('card-'+key).className='attr-card rolled';}for(const key of ATTR_KEYS)document.getElementById('dice-'+key).textContent=`[${diceDetails[key].join(' + ')}]`;try{const docRef=await addDoc(rollsRef,{playerName,charName,attrs:rolls,ts:Date.now()});freshId=docRef.id;}catch(e){console.error('Erro:',e);alert('Erro ao salvar no Firebase: '+e.message);}renderRacePanel(rolls,charName);btn.classList.remove('rolling');btn.disabled=false;});
-document.getElementById('clearBtn').addEventListener('click',async()=>{const senha=prompt('🔐 Senha do Mestre:');if(senha===null)return;if(senha!=='LucasNoob'){alert('❌ Senha incorreta! Apenas o Mestre pode apagar a crônica.');return;}if(!confirm('Apagar TODA a crônica do servidor?'))return;try{const snap=await getDocs(rollsRef);await Promise.all(snap.docs.map(d=>deleteDoc(doc(db,'rolls',d.id))));}catch(e){alert('Erro: '+e.message);}});
+onSnapshot(q,(snapshot)=>{setStatus('online');updateLastUpdate();renderLog(snapshot.docs.map(d=>({id:d.id,...d.data()})));},
+(err)=>{console.error('Firestore:',err);setStatus('offline');});
+
+// ROLL
+document.getElementById('rollBtn').addEventListener('click',async()=>{
+  const playerName=document.getElementById('playerName').value.trim()||'Jogador';
+  const charName=document.getElementById('charName').value.trim()||'Aventureiro';
+  const btn=document.getElementById('rollBtn');
+  btn.disabled=true;btn.classList.add('rolling');
+  for(const k of ATTR_KEYS){document.getElementById('val-'+k).textContent='?';document.getElementById('card-'+k).className='attr-card';document.getElementById('dice-'+k).textContent='';}
+  await new Promise(r=>setTimeout(r,50));
+  const rolls={},dd={};
+  for(const k of ATTR_KEYS){const r=roll3d6();rolls[k]=r.total;dd[k]=r.dice;}
+  for(let f=0;f<10;f++){for(const k of ATTR_KEYS)document.getElementById('val-'+k).textContent=Math.floor(Math.random()*16)+3;await new Promise(r=>setTimeout(r,45));}
+  for(const k of ATTR_KEYS){const el=document.getElementById('val-'+k);el.textContent=rolls[k];el.className='attr-val';document.getElementById('card-'+k).className='attr-card rolled';}
+  for(const k of ATTR_KEYS)document.getElementById('dice-'+k).textContent=`[${dd[k].join(' + ')}]`;
+  try{const ref=await addDoc(rollsRef,{playerName,charName,attrs:rolls,ts:Date.now()});freshId=ref.id;}
+  catch(e){console.error(e);alert('Erro ao salvar: '+e.message);}
+  renderRacePanel(rolls,charName);
+  btn.classList.remove('rolling');btn.disabled=false;
+});
+
+// LIMPAR
+document.getElementById('clearBtn').addEventListener('click',async()=>{
+  const s=prompt('🔐 Senha do Mestre:');if(s===null)return;
+  if(s!=='LucasNoob'){alert('❌ Senha incorreta!');return;}
+  if(!confirm('Apagar TODA a crônica?'))return;
+  try{const sn=await getDocs(rollsRef);await Promise.all(sn.docs.map(d=>deleteDoc(doc(db,'rolls',d.id))));}
+  catch(e){alert('Erro: '+e.message);}
+});
 </script>
 </body>
 </html>
