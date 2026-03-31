@@ -213,7 +213,7 @@ const rollsRef=collection(db,"rolls");
 
 // STATUS
 function setStatus(s){const dot=document.getElementById('statusDot'),txt=document.getElementById('statusTxt');dot.className='status-dot';if(s==='online'){dot.classList.add('online');txt.textContent='CONECTADO — TEMPO REAL';}else if(s==='offline'){txt.textContent='SEM CONEXÃO';}else{dot.classList.add('connecting');txt.textContent='CONECTANDO...';}}
-function updateLastUpdate(){const n=new Date();document.getElementById('lastUpdate').textContent=n.toLocaleDateString('pt-BR')+' às '+n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+function updateLastUpdate(){const n=new Date(document.lastModified);document.getElementById('lastUpdate').textContent=n.toLocaleDateString('pt-BR')+' às '+n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
 
 // DADOS DE RAÇA
 const RACES=[
