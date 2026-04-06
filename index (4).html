@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>⚔ AD&D 2ª Ed — Taverna dos Dados</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet"/>
+<style>
+:root{--parch:#f2e4c4;--parch2:#ddc99a;--parch3:#c4a96a;--red:#8b1a1a;--red2:#c0392b;--gold:#b8860b;--gold2:#d4a017;--gold3:#f0c040;--bg:#0e0a04;--panel:#1f1609;--panel2:#2a1e0c;--border:#5a3e18;--green:#4ade80;--blue:#60a5fa;}
+*{box-sizing:border-box;margin:0;padding:0}html{scroll-behavior:smooth}
+body{font-family:'Crimson Text',Georgia,serif;background:var(--bg);color:var(--parch);min-height:100vh;background-image:radial-gradient(ellipse 80% 40% at 50% 0%,rgba(139,26,26,.12) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 80% 80%,rgba(184,134,11,.06) 0%,transparent 60%),repeating-linear-gradient(0deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px),repeating-linear-gradient(90deg,transparent,transparent 59px,rgba(90,62,24,.07) 60px);}
+
+/* HEADER */
+header{text-align:center;padding:2.5rem 1rem 1.2rem;position:relative;border-bottom:1px solid var(--border)}
+header::before{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(139,26,26,.08) 0%,transparent 100%);pointer-events:none}
+.h-ornament{color:var(--gold2);font-size:1.2rem;letter-spacing:.8rem;display:block;margin-bottom:.4rem;opacity:.6}
+.h-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.4rem,3.5vw,2.5rem);font-weight:900;color:var(--gold3);text-shadow:0 0 40px rgba(212,160,23,.5),0 2px 6px rgba(0,0,0,.9);line-height:1.15}
+.h-sub{font-family:'Cinzel',serif;font-size:.75rem;color:var(--parch3);letter-spacing:.3em;text-transform:uppercase;margin-top:.5rem}
+.h-rule{width:300px;max-width:80%;height:1px;background:linear-gradient(90deg,transparent,var(--gold2),transparent);margin:.8rem auto 0}
+
+/* INFO BAR */
+.info-bar{display:flex;align-items:center;justify-content:center;gap:1.5rem;padding:.5rem 1rem;flex-wrap:wrap;border-bottom:1px solid rgba(90,62,24,.3)}
+.status-wrap{display:flex;align-items:center;gap:.45rem}
+.status-dot{width:8px;height:8px;border-radius:50%;background:#e74c3c;box-shadow:0 0 8px rgba(231,76,60,.6);transition:all .4s}
+.status-dot.online{background:#4ade80;box-shadow:0 0 8px rgba(74,222,128,.6)}
+.status-dot.connecting{background:var(--gold2);box-shadow:0 0 8px rgba(212,160,23,.6);animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.status-txt{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.1em;color:var(--parch3)}
+.last-update{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.08em;color:rgba(194,169,106,.45)}
+.last-update span{color:rgba(194,169,106,.7)}
+
+/* TABS */
+.tabs{display:flex;border-bottom:1px solid var(--border);background:rgba(0,0,0,.3);position:sticky;top:0;z-index:50;}
+.tab-btn{flex:1;padding:.85rem .5rem;font-family:'Cinzel',serif;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--parch3);background:none;border:none;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;position:relative;}
+.tab-btn:hover{color:var(--gold2);background:rgba(184,134,11,.05)}
+.tab-btn.active{color:var(--gold3);border-bottom-color:var(--gold2);background:rgba(184,134,11,.08)}
+.tab-btn .tab-icon{display:block;font-size:1.1rem;margin-bottom:.2rem}
+
+/* PAGES */
+.page{display:none}.page.active{display:block}
+.wrap{max-width:1000px;margin:0 auto;padding:1.8rem 1.2rem 4rem}
+
+/* PANELS */
+.panel{background:linear-gradient(160deg,var(--panel2) 0%,var(--panel) 100%);border:1px solid var(--border);border-radius:2px;padding:1.6rem;position:relative;box-shadow:0 6px 30px rgba(0,0,0,.6),inset 0 1px 0 rgba(212,160,23,.08);margin-bottom:1.8rem}
+.panel::after{content:'';position:absolute;top:4px;left:4px;right:4px;bottom:4px;border:1px solid rgba(184,134,11,.1);border-radius:1px;pointer-events:none}
+.corner{position:absolute;width:16px;height:16px;border-color:var(--gold2);border-style:solid;opacity:.5}
+.corner-tl{top:6px;left:6px;border-width:1px 0 0 1px}.corner-tr{top:6px;right:6px;border-width:1px 1px 0 0}.corner-bl{bottom:6px;left:6px;border-width:0 0 1px 1px}.corner-br{bottom:6px;right:6px;border-width:0 1px 1px 0}
+.panel-title{font-family:'Cinzel',serif;font-size:.9rem;font-weight:700;color:var(--gold2);letter-spacing:.2em;text-transform:uppercase;margin-bottom:1.3rem;padding-bottom:.6rem;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:.5rem}
+
+/* INPUTS */
+.fields-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;margin-bottom:1.2rem}
+@media(max-width:500px){.fields-row{grid-template-columns:1fr}}
+.field-group{display:flex;flex-direction:column;gap:.3rem}
+.field-label{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3)}
+.txt-input{width:100%;background:rgba(0,0,0,.5);border:1px solid var(--border);border-radius:2px;color:var(--parch);font-family:'Crimson Text',serif;font-size:1.1rem;padding:.5rem .8rem;outline:none;transition:border-color .2s,box-shadow .2s}
+.txt-input:focus{border-color:var(--gold2);box-shadow:0 0 12px rgba(212,160,23,.2)}
+.txt-input::placeholder{color:rgba(194,169,106,.3)}
+
+/* BUTTONS */
+.roll-btn{width:100%;background:linear-gradient(180deg,#a52020 0%,var(--red) 100%);border:1px solid #7a1515;border-radius:2px;color:var(--parch);font-family:'Cinzel',serif;font-size:1rem;font-weight:700;letter-spacing:.12em;padding:.85rem;cursor:pointer;transition:all .2s;text-transform:uppercase;box-shadow:0 3px 15px rgba(139,26,26,.5);margin-top:.5rem}
+.roll-btn:hover:not(:disabled){background:linear-gradient(180deg,#c0392b 0%,#a52020 100%);transform:translateY(-1px);box-shadow:0 5px 22px rgba(192,57,43,.55)}
+.roll-btn:active:not(:disabled){transform:translateY(1px)}
+.roll-btn:disabled{opacity:.45;cursor:not-allowed}
+@keyframes shake{0%,100%{transform:translateX(0) rotate(0)}20%{transform:translateX(-4px) rotate(-4deg)}40%{transform:translateX(4px) rotate(4deg)}60%{transform:translateX(-2px) rotate(-2deg)}80%{transform:translateX(2px) rotate(2deg)}}
+.roll-btn.rolling{animation:shake .45s ease}
+
+/* ATTR GRID */
+.attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.75rem;margin-bottom:1rem}
+@media(max-width:500px){.attr-grid{grid-template-columns:repeat(2,1fr)}}
+.attr-card{background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:2px;padding:.75rem .6rem .6rem;text-align:center;transition:border-color .3s}
+.attr-card.rolled{border-color:var(--gold)}
+.attr-name{font-family:'Cinzel',serif;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:var(--parch3);display:block;margin-bottom:.4rem}
+.attr-val{font-family:'Cinzel Decorative',serif;font-size:2.2rem;font-weight:900;color:var(--gold3);line-height:1;text-shadow:0 0 20px rgba(240,192,64,.4);display:block;min-height:2.5rem}
+.attr-val.empty{color:rgba(194,169,106,.2);font-size:1.5rem}
+.attr-dice{font-size:.72rem;color:rgba(194,169,106,.4);margin-top:.25rem;font-style:italic}
+
+/* RACE CARDS */
+.race-intro{font-size:1rem;color:var(--parch2);margin-bottom:1rem;font-style:italic;line-height:1.5}
+.race-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:.8rem}
+@media(max-width:700px){.race-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:420px){.race-grid{grid-template-columns:1fr}}
+.race-card{border:1px solid var(--border);border-radius:2px;padding:1rem;background:rgba(0,0,0,.3);position:relative;overflow:hidden;transition:all .2s}
+.race-card.eligible{border-color:var(--gold2);background:rgba(184,134,11,.08);cursor:pointer}
+.race-card.eligible:hover{border-color:var(--gold3);background:rgba(184,134,11,.15);transform:translateY(-2px);box-shadow:0 6px 20px rgba(184,134,11,.25)}
+.race-card.eligible::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--gold2),transparent)}
+.race-card.ineligible{border-color:rgba(90,62,24,.4);opacity:.45}
+.race-card.human-card{border-color:var(--gold);background:rgba(184,134,11,.05)}
+.race-name{font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--gold3);margin-bottom:.4rem;display:flex;align-items:center;gap:.4rem}
+.race-card.ineligible .race-name{color:var(--parch3)}
+.race-badge{font-size:.6rem;padding:1px 5px;border-radius:1px;font-family:'Cinzel',serif;letter-spacing:.05em;font-weight:700}
+.badge-ok{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
+.badge-no{background:rgba(192,57,43,.15);color:#e74c3c;border:1px solid rgba(192,57,43,.3)}
+.race-adjusts{font-size:.8rem;color:var(--parch3);font-style:italic;margin-bottom:.5rem}
+.req-row{display:flex;justify-content:space-between;font-size:.76rem;padding:1px 0}
+.req-label{color:rgba(194,169,106,.6)}.req-range{font-family:'Cinzel',serif;font-size:.7rem}
+.req-ok{color:#4ade80}.req-fail{color:#e74c3c}
+.fail-reason{font-size:.74rem;color:#e74c3c;margin-top:.4rem;font-style:italic}
+.click-hint{font-size:.72rem;color:var(--gold2);margin-top:.6rem;text-align:center;opacity:.7;font-style:italic}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(3px);z-index:100;display:flex;align-items:center;justify-content:center;padding:1rem;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:linear-gradient(160deg,#2e200a 0%,#1a1208 100%);border:1px solid var(--gold2);border-radius:3px;padding:2rem;max-width:520px;width:100%;position:relative;box-shadow:0 20px 60px rgba(0,0,0,.8),0 0 40px rgba(184,134,11,.15);transform:translateY(20px) scale(.97);transition:transform .25s}
+.modal-overlay.open .modal{transform:translateY(0) scale(1)}
+.modal::before{content:'';position:absolute;top:4px;left:4px;right:4px;bottom:4px;border:1px solid rgba(184,134,11,.12);border-radius:2px;pointer-events:none}
+.modal-close{position:absolute;top:.8rem;right:.8rem;background:none;border:1px solid rgba(194,169,106,.25);border-radius:2px;color:var(--parch3);font-size:1rem;width:28px;height:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;font-family:'Cinzel',serif}
+.modal-close:hover{border-color:var(--red2);color:var(--red2)}
+.modal-race-header{text-align:center;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.modal-race-icon{font-size:2.5rem;display:block;margin-bottom:.4rem}
+.modal-race-name{font-family:'Cinzel Decorative',serif;font-size:1.5rem;font-weight:700;color:var(--gold3);text-shadow:0 0 20px rgba(240,192,64,.3)}
+.modal-race-adjust{font-size:.9rem;color:var(--parch3);font-style:italic;margin-top:.3rem}
+.modal-section-title{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold2);margin-bottom:.7rem}
+.modal-attr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-bottom:1.4rem}
+.modal-attr{background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:2px;padding:.6rem .4rem;text-align:center}
+.modal-attr.boosted{border-color:#4ade80;background:rgba(74,222,128,.06)}
+.modal-attr.penalized{border-color:#e74c3c;background:rgba(231,76,60,.06)}
+.modal-attr-name{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:var(--parch3);display:block;margin-bottom:.3rem}
+.modal-attr-val{font-family:'Cinzel Decorative',serif;font-size:1.7rem;font-weight:900;color:var(--gold3);display:block;line-height:1}
+.modal-attr.boosted .modal-attr-val{color:#4ade80;text-shadow:0 0 12px rgba(74,222,128,.4)}
+.modal-attr.penalized .modal-attr-val{color:#e74c3c;text-shadow:0 0 12px rgba(231,76,60,.4)}
+.modal-attr-delta{font-size:.68rem;font-family:'Cinzel',serif;font-weight:700;margin-top:.2rem;display:block}
+.modal-attr.boosted .modal-attr-delta{color:#4ade80}
+.modal-attr.penalized .modal-attr-delta{color:#e74c3c}
+.modal-attr-delta.neutral{color:transparent}
+.modal-compare{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;padding:.8rem 1rem;margin-bottom:1rem}
+.compare-row{display:flex;justify-content:space-between;align-items:center;padding:.3rem 0;border-bottom:1px solid rgba(90,62,24,.3);font-size:.85rem}
+.compare-row:last-child{border-bottom:none}
+.compare-attr-name{color:var(--parch3);min-width:100px}
+.compare-vals{display:flex;align-items:center;gap:.6rem;font-family:'Cinzel',serif;font-size:.8rem}
+.compare-base{color:rgba(194,169,106,.5)}.compare-arrow{color:var(--border)}.compare-final{font-weight:700}
+.compare-final.up{color:#4ade80}.compare-final.down{color:#e74c3c}.compare-final.same{color:var(--gold3)}
+.compare-tag{font-size:.62rem;padding:1px 4px;border-radius:1px;font-weight:700}
+.tag-up{background:rgba(74,222,128,.15);color:#4ade80;border:1px solid rgba(74,222,128,.3)}
+.tag-down{background:rgba(231,76,60,.15);color:#e74c3c;border:1px solid rgba(231,76,60,.3)}
+
+/* LOG */
+.log-list{display:flex;flex-direction:column;gap:.6rem;max-height:450px;overflow-y:auto;padding-right:4px}
+.log-list::-webkit-scrollbar{width:4px}.log-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.log-entry{background:rgba(0,0,0,.3);border:1px solid rgba(90,62,24,.4);border-radius:2px;padding:.75rem 1rem;animation:fadeIn .4s ease;position:relative;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.log-entry.fresh{border-color:rgba(184,134,11,.5);background:rgba(184,134,11,.05)}
+.log-header{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.15rem;padding-right:28px;}
+.log-char{font-family:'Cinzel',serif;font-size:.92rem;font-weight:700;color:var(--gold3)}
+.log-player{font-size:.8rem;color:var(--parch3);margin-bottom:.4rem;font-style:italic}
+.log-time{font-size:.7rem;color:rgba(194,169,106,.35)}
+.log-attrs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.35rem}
+.log-attr{background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:2px;padding:.15rem .45rem;font-size:.78rem}
+.log-attr span:first-child{color:rgba(194,169,106,.5);font-size:.7rem;margin-right:2px}
+.log-attr span:last-child{font-family:'Cinzel',serif;color:var(--gold3);font-weight:700}
+.log-races{font-size:.8rem;color:var(--parch3)}.log-races strong{color:var(--gold2)}
+.empty-state{text-align:center;color:rgba(194,169,106,.3);font-style:italic;padding:2.5rem;font-size:1rem}
+.clear-btn{margin-left:auto;background:none;border:1px solid rgba(194,169,106,.2);border-radius:2px;color:rgba(194,169,106,.4);font-family:'Crimson Text',serif;font-size:.82rem;padding:2px 10px;cursor:pointer;transition:all .2s}
+.clear-btn:hover{border-color:var(--red2);color:var(--red2)}
+.del-btn{position:absolute;top:10px;right:10px;background:none;border:1px solid rgba(139,26,26,.3);color:rgba(139,26,26,.6);font-size:.8rem;cursor:pointer;padding:0 5px;border-radius:2px;font-weight:bold;transition:all .2s;}
+.del-btn:hover{color:var(--red2);border-color:var(--red2);background:rgba(139,26,26,.1);}
+
+/* ══════════════════════════════════════════
+   INITIATIVE TRACKER
+══════════════════════════════════════════ */
+
+/* ADD COMBATANT FORM */
+.init-add-grid{display:grid;grid-template-columns:1fr auto auto auto auto;gap:.6rem;align-items:end;margin-bottom:.8rem}
+@media(max-width:600px){.init-add-grid{grid-template-columns:1fr 1fr;}}
+.type-toggle{display:flex;gap:.4rem;}
+.type-btn{flex:1;padding:.5rem .6rem;font-family:'Cinzel',serif;font-size:.7rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;border-radius:2px;cursor:pointer;transition:all .2s;border:1px solid var(--border);background:rgba(0,0,0,.3);color:var(--parch3);}
+.type-btn.sel-player{border-color:#60a5fa;background:rgba(96,165,250,.12);color:#60a5fa;}
+.type-btn.sel-enemy{border-color:#e74c3c;background:rgba(231,76,60,.12);color:#e74c3c;}
+.add-btn{background:linear-gradient(180deg,rgba(184,134,11,.3) 0%,rgba(184,134,11,.15) 100%);border:1px solid var(--gold);border-radius:2px;color:var(--gold3);font-family:'Cinzel',serif;font-size:.8rem;font-weight:700;padding:.52rem 1rem;cursor:pointer;white-space:nowrap;transition:all .2s;letter-spacing:.05em;}
+.add-btn:hover{background:rgba(184,134,11,.3);transform:translateY(-1px);}
+
+/* COMBATANT LIST (pre-roll) */
+.combatant-list{display:flex;flex-direction:column;gap:.4rem;margin-bottom:1rem;min-height:48px;}
+.combatant-chip{display:flex;align-items:center;gap:.6rem;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:2px;padding:.45rem .7rem;}
+.combatant-chip.type-player{border-left:3px solid #60a5fa;}
+.combatant-chip.type-enemy{border-left:3px solid #e74c3c;}
+.chip-icon{font-size:1rem;}
+.chip-name{font-family:'Cinzel',serif;font-size:.82rem;color:var(--parch);flex:1;}
+.chip-type{font-size:.65rem;font-family:'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase;padding:1px 5px;border-radius:1px;}
+.chip-type.player{color:#60a5fa;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);}
+.chip-type.enemy{color:#e74c3c;background:rgba(231,76,60,.1);border:1px solid rgba(231,76,60,.25);}
+.chip-del{background:none;border:none;color:rgba(194,169,106,.3);cursor:pointer;font-size:.9rem;padding:0 2px;transition:color .2s;line-height:1;}
+.chip-del:hover{color:var(--red2);}
+.no-combatants{text-align:center;color:rgba(194,169,106,.25);font-style:italic;font-size:.9rem;padding:1rem;}
+
+/* ROLL INITIATIVE BTN */
+.init-roll-btn{width:100%;background:linear-gradient(180deg,#1a3a1a 0%,#0e200e 100%);border:1px solid #2d5a2d;border-radius:2px;color:var(--green);font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;letter-spacing:.1em;padding:.8rem;cursor:pointer;transition:all .2s;text-transform:uppercase;box-shadow:0 3px 15px rgba(74,222,128,.1);}
+.init-roll-btn:hover:not(:disabled){background:linear-gradient(180deg,#234a23 0%,#1a3a1a 100%);transform:translateY(-1px);box-shadow:0 5px 22px rgba(74,222,128,.2);}
+.init-roll-btn:disabled{opacity:.4;cursor:not-allowed;}
+
+/* ROUND CONTROLS */
+.round-bar{display:flex;align-items:center;gap:1rem;margin-bottom:1.2rem;flex-wrap:wrap;}
+.round-badge{font-family:'Cinzel Decorative',serif;font-size:1.1rem;color:var(--gold3);text-shadow:0 0 15px rgba(240,192,64,.3);}
+.round-sub{font-size:.8rem;color:var(--parch3);font-style:italic;}
+.round-btn{background:none;border:1px solid var(--border);border-radius:2px;color:var(--parch3);font-family:'Cinzel',serif;font-size:.72rem;font-weight:700;padding:.35rem .8rem;cursor:pointer;letter-spacing:.08em;text-transform:uppercase;transition:all .2s;}
+.round-btn:hover{border-color:var(--gold2);color:var(--gold2);}
+.round-btn.danger:hover{border-color:var(--red2);color:var(--red2);}
+.round-btn.ml{margin-left:auto;}
+
+/* INITIATIVE ORDER LIST */
+.init-order{display:flex;flex-direction:column;gap:.5rem;}
+
+.init-row{display:flex;align-items:center;gap:.8rem;border:1px solid var(--border);border-radius:2px;padding:.7rem 1rem;background:rgba(0,0,0,.3);transition:all .3s;position:relative;overflow:hidden;}
+.init-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;}
+.init-row.type-player::before{background:#60a5fa;}
+.init-row.type-enemy::before{background:#e74c3c;}
+
+/* Active (current turn) */
+.init-row.active-turn{border-color:var(--gold2);background:rgba(184,134,11,.1);box-shadow:0 0 20px rgba(184,134,11,.15);}
+.init-row.active-turn::after{content:'◀ VEZ';position:absolute;right:10px;top:50%;transform:translateY(-50%);font-family:'Cinzel',serif;font-size:.6rem;font-weight:700;color:var(--gold2);letter-spacing:.08em;opacity:.7;}
+
+/* Done (already acted) */
+.init-row.done-turn{opacity:.42;filter:grayscale(.4);}
+.init-row.done-turn .init-name{text-decoration:line-through;text-decoration-color:rgba(194,169,106,.4);}
+
+/* Position number */
+.init-pos{font-family:'Cinzel Decorative',serif;font-size:1.1rem;color:rgba(194,169,106,.3);min-width:22px;text-align:center;}
+.init-row.active-turn .init-pos{color:var(--gold3);}
+
+/* Dice result */
+.init-dice-val{font-family:'Cinzel Decorative',serif;font-size:1.8rem;font-weight:900;min-width:44px;text-align:center;line-height:1;}
+.type-player .init-dice-val{color:#60a5fa;text-shadow:0 0 12px rgba(96,165,250,.4);}
+.type-enemy .init-dice-val{color:#e74c3c;text-shadow:0 0 12px rgba(231,76,60,.4);}
+.init-row.active-turn.type-player .init-dice-val{color:#93c5fd;text-shadow:0 0 20px rgba(96,165,250,.6);}
+.init-row.active-turn.type-enemy .init-dice-val{color:#f87171;text-shadow:0 0 20px rgba(231,76,60,.6);}
+
+/* Name + type */
+.init-info{flex:1;min-width:0;}
+.init-name{font-family:'Cinzel',serif;font-size:.95rem;font-weight:700;color:var(--parch);display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.init-type-label{font-size:.65rem;font-family:'Cinzel',serif;letter-spacing:.08em;text-transform:uppercase;margin-top:1px;display:block;}
+.type-player .init-type-label{color:rgba(96,165,250,.6);}
+.type-enemy .init-type-label{color:rgba(231,76,60,.6);}
+
+/* Action buttons on each row */
+.init-actions{display:flex;gap:.35rem;flex-shrink:0;}
+.ia-btn{background:none;border:1px solid rgba(90,62,24,.5);border-radius:2px;color:rgba(194,169,106,.5);font-size:.75rem;cursor:pointer;padding:.28rem .5rem;transition:all .2s;font-family:'Cinzel',serif;white-space:nowrap;}
+.ia-btn:hover{border-color:var(--gold2);color:var(--gold2);}
+.ia-btn.act-btn{border-color:rgba(74,222,128,.3);color:rgba(74,222,128,.7);}
+.ia-btn.act-btn:hover{border-color:var(--green);color:var(--green);background:rgba(74,222,128,.08);}
+.ia-btn.undo-btn{border-color:rgba(212,160,23,.3);color:rgba(212,160,23,.6);}
+.ia-btn.undo-btn:hover{border-color:var(--gold2);color:var(--gold2);}
+.ia-btn.rm-btn:hover{border-color:var(--red2);color:var(--red2);}
+
+@keyframes rollIn{0%{transform:scale(1.4);opacity:0}60%{transform:scale(.95)}100%{transform:scale(1);opacity:1}}
+.init-dice-val.just-rolled{animation:rollIn .4s ease forwards;}
+
+/* Tie badge */
+.tie-badge{font-size:.6rem;font-family:'Cinzel',serif;color:var(--gold2);border:1px solid rgba(212,160,23,.3);background:rgba(212,160,23,.08);padding:1px 4px;border-radius:1px;margin-left:.3rem;vertical-align:middle;}
+
+/* Round divider */
+.round-divider{text-align:center;color:rgba(194,169,106,.2);font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;padding:.4rem;border-top:1px dashed rgba(90,62,24,.3);margin-top:.3rem;}
+
+/* EMPTY TRACKER */
+.tracker-empty{text-align:center;padding:2.5rem 1rem;color:rgba(194,169,106,.3);font-style:italic;}
+.tracker-empty .big{font-size:2.5rem;display:block;margin-bottom:.5rem;opacity:.4;}
+</style>
+</head>
+<body>
+
+<header>
+  <span class="h-ornament">✦ ✦ ✦</span>
+  <div class="h-title">Taverna dos Dados</div>
+  <div class="h-sub">AD&amp;D 2ª Edição · Geração de Personagens &amp; Combate</div>
+  <div class="h-rule"></div>
+</header>
+
+<div class="info-bar">
+  <div class="status-wrap">
+    <div class="status-dot connecting" id="statusDot"></div>
+    <span class="status-txt" id="statusTxt">CONECTANDO...</span>
+  </div>
+  <div class="last-update">ÚLTIMA ATUALIZAÇÃO: <span id="lastUpdate">—</span></div>
+</div>
+
+<!-- TABS -->
+<nav class="tabs">
+  <button class="tab-btn active" data-tab="chars">
+    <span class="tab-icon">🎲</span>Personagens
+  </button>
+  <button class="tab-btn" data-tab="tracker">
+    <span class="tab-icon">⚔️</span>Iniciativa
+  </button>
+</nav>
+
+<!-- PAGE: PERSONAGENS -->
+<div class="page active" id="page-chars">
+<div class="wrap">
+  <div class="panel">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="panel-title">🎲 Rolar Atributos do Personagem</div>
+    <div class="fields-row">
+      <div class="field-group">
+        <label class="field-label" for="playerName">Seu Nome (jogador)</label>
+        <input class="txt-input" id="playerName" type="text" placeholder="Ex: Diego, Lucas..." maxlength="35"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label" for="charName">Nome do Aventureiro</label>
+        <input class="txt-input" id="charName" type="text" placeholder="Ex: Thorin, Legolas..." maxlength="35"/>
+      </div>
+    </div>
+    <div class="attr-grid">
+      <div class="attr-card" id="card-for"><span class="attr-name">Força</span><span class="attr-val empty" id="val-for">—</span><div class="attr-dice" id="dice-for"></div></div>
+      <div class="attr-card" id="card-dex"><span class="attr-name">Destreza</span><span class="attr-val empty" id="val-dex">—</span><div class="attr-dice" id="dice-dex"></div></div>
+      <div class="attr-card" id="card-con"><span class="attr-name">Constituição</span><span class="attr-val empty" id="val-con">—</span><div class="attr-dice" id="dice-con"></div></div>
+      <div class="attr-card" id="card-int"><span class="attr-name">Inteligência</span><span class="attr-val empty" id="val-int">—</span><div class="attr-dice" id="dice-int"></div></div>
+      <div class="attr-card" id="card-sab"><span class="attr-name">Sabedoria</span><span class="attr-val empty" id="val-sab">—</span><div class="attr-dice" id="dice-sab"></div></div>
+      <div class="attr-card" id="card-car"><span class="attr-name">Carisma</span><span class="attr-val empty" id="val-car">—</span><div class="attr-dice" id="dice-car"></div></div>
+    </div>
+    <button class="roll-btn" id="rollBtn">⚄ Rolar 3d6 para os 6 Atributos</button>
+  </div>
+
+  <div class="panel" id="racePanel" style="display:none">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="panel-title">📜 Raças Disponíveis</div>
+    <p class="race-intro" id="raceIntro"></p>
+    <div class="race-grid" id="raceGrid"></div>
+  </div>
+
+  <div class="panel">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="panel-title">📜 Crônica dos Aventureiros<button class="clear-btn" id="clearBtn">Limpar</button></div>
+    <div class="log-list" id="logList"><div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div></div>
+  </div>
+</div>
+</div>
+
+<!-- PAGE: INITIATIVE TRACKER -->
+<div class="page" id="page-tracker">
+<div class="wrap">
+
+  <!-- ADD COMBATANTS -->
+  <div class="panel">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="panel-title">⚔️ Combatentes</div>
+
+    <div class="init-add-grid">
+      <div class="field-group">
+        <label class="field-label">Nome</label>
+        <input class="txt-input" id="initName" type="text" placeholder="Ex: Gandalf, Goblin..." maxlength="30"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Tipo</label>
+        <div class="type-toggle">
+          <button class="type-btn sel-player" id="typePlayer" onclick="selectType('player')">🛡 Herói</button>
+          <button class="type-btn" id="typeEnemy" onclick="selectType('enemy')">💀 Inimigo</button>
+        </div>
+      </div>
+      <div class="field-group">
+        <label class="field-label" title="Velocidade da arma somada ao d10">Vel. Arma</label>
+        <input class="txt-input" id="initSpeed" type="number" placeholder="0" min="0" max="20" style="width:70px;text-align:center;font-family:'Cinzel',serif;font-size:.95rem;"/>
+      </div>
+      <div class="field-group" style="justify-content:flex-end">
+        <label class="field-label" style="visibility:hidden">Add</label>
+        <button class="add-btn" onclick="addCombatant()">+ Adicionar</button>
+      </div>
+    </div>
+
+    <div class="combatant-list" id="combatantList">
+      <div class="no-combatants">Nenhum combatente adicionado ainda.</div>
+    </div>
+
+    <button class="init-roll-btn" id="initRollBtn" onclick="rollInitiative()">🎲 Rolar Iniciativa (D10) para Todos</button>
+    <div style="text-align:center;margin-top:.6rem;font-size:.78rem;color:rgba(194,169,106,.4);font-style:italic;">Total = D10 + Velocidade da Arma — menor total age primeiro</div>
+  </div>
+
+  <!-- BATTLE ORDER -->
+  <div class="panel" id="battlePanel" style="display:none">
+    <div class="corner corner-tl"></div><div class="corner corner-tr"></div><div class="corner corner-bl"></div><div class="corner corner-br"></div>
+    <div class="panel-title">⚔️ Ordem de Combate</div>
+
+    <div class="round-bar">
+      <div>
+        <div class="round-badge" id="roundBadge">Rodada 1</div>
+        <div class="round-sub" id="roundSub">Clique em "Agiu" para avançar o turno</div>
+      </div>
+      <button class="round-btn" onclick="rerollRound()">🎲 Nova Rodada</button>
+      <button class="round-btn danger ml" onclick="resetTracker()">✕ Reiniciar</button>
+    </div>
+
+    <div class="init-order" id="initOrder"></div>
+  </div>
+
+</div>
+</div>
+
+<!-- RACE MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <button class="modal-close" id="modalClose">✕</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getFirestore,collection,addDoc,onSnapshot,query,orderBy,deleteDoc,doc,getDocs}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig={apiKey:"AIzaSyCZ4S9TeljRTwuHBTkAgZp0iwRBZfiH7eQ",authDomain:"taverna-dos-dados-rpg.firebaseapp.com",projectId:"taverna-dos-dados-rpg",storageBucket:"taverna-dos-dados-rpg.firebasestorage.app",messagingSenderId:"879653742565",appId:"1:879653742565:web:217907eed0b10e5454310c"};
+const app=initializeApp(firebaseConfig);
+const db=getFirestore(app);
+const rollsRef=collection(db,"rolls");
+
+// STATUS
+function setStatus(s){const dot=document.getElementById('statusDot'),txt=document.getElementById('statusTxt');dot.className='status-dot';if(s==='online'){dot.classList.add('online');txt.textContent='CONECTADO — TEMPO REAL';}else if(s==='offline'){txt.textContent='SEM CONEXÃO';}else{dot.classList.add('connecting');txt.textContent='CONECTANDO...';}}
+function updateLastUpdate(){const n=new Date();document.getElementById('lastUpdate').textContent=n.toLocaleDateString('pt-BR')+' às '+n.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
+
+// TABS
+document.querySelectorAll('.tab-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('page-'+btn.dataset.tab).classList.add('active');
+  });
+});
+
+// RACES DATA
+const RACES=[
+  {id:'humano',name:'Humano',icon:'👤',adjusts:null,adjustText:'Sem ajustes raciais',reqs:{for:[3,18],dex:[3,18],con:[3,18],int:[3,18],sab:[3,18],car:[3,18]}},
+  {id:'anao',name:'Anão',icon:'⛏️',adjusts:{con:1,car:-1},adjustText:'+1 Constituição / −1 Carisma',reqs:{for:[8,18],dex:[3,17],con:[11,18],int:[3,18],sab:[3,18],car:[3,17]}},
+  {id:'elfo',name:'Elfo',icon:'🏹',adjusts:{dex:1,con:-1},adjustText:'+1 Destreza / −1 Constituição',reqs:{for:[3,18],dex:[6,18],con:[7,18],int:[8,18],sab:[3,18],car:[8,18]}},
+  {id:'gnomo',name:'Gnomo',icon:'🔮',adjusts:{int:1,sab:-1},adjustText:'+1 Inteligência / −1 Sabedoria',reqs:{for:[6,18],dex:[3,18],con:[8,18],int:[6,18],sab:[3,18],car:[3,18]}},
+  {id:'meio-elfo',name:'Meio-Elfo',icon:'🌙',adjusts:null,adjustText:'Sem ajustes raciais',reqs:{for:[3,18],dex:[6,18],con:[6,18],int:[4,18],sab:[3,18],car:[3,18]}},
+  {id:'halfling',name:'Halfling',icon:'🍃',adjusts:{dex:1,for:-1},adjustText:'+1 Destreza / −1 Força',reqs:{for:[7,18],dex:[7,18],con:[10,18],int:[6,18],sab:[3,17],car:[3,18]}}
+];
+const ATTR_KEYS=['for','dex','con','int','sab','car'];
+const ATTR_NAMES={for:'Força',dex:'Destreza',con:'Constituição',int:'Inteligência',sab:'Sabedoria',car:'Carisma'};
+function checkRace(race,attrs){const f=[];for(const k of ATTR_KEYS){const[mn,mx]=race.reqs[k];if(attrs[k]<mn||attrs[k]>mx)f.push({key:k,val:attrs[k],min:mn,max:mx});}return{eligible:f.length===0,failures:f};}
+function applyAdjust(race,attrs){const r={};for(const k of ATTR_KEYS){const d=(race.adjusts&&race.adjusts[k])||0;r[k]=attrs[k]+d;}return r;}
+
+// UTILS
+function d6(){return Math.floor(Math.random()*6)+1;}
+function d10(){return Math.floor(Math.random()*10)+1;}
+function roll3d6(){const d=[d6(),d6(),d6()];return{total:d.reduce((a,b)=>a+b,0),dice:d};}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function fmtDT(ts){const d=new Date(ts);return d.toLocaleDateString('pt-BR')+' '+d.toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});}
+
+// DELETE INDIVIDUAL
+window.excluirAventureiro=async(id)=>{
+  const s=prompt('🔐 Senha do Mestre:');if(s===null)return;
+  if(s!=='LucasNoob'){alert('❌ Senha incorreta!');return;}
+  try{await deleteDoc(doc(db,'rolls',id));}
+  catch(e){alert('Erro: '+e.message);}
+};
+
+// MODAL
+function openModal(race,attrs){
+  const final=applyAdjust(race,attrs);
+  let attrCards='',compareRows='';
+  for(const k of ATTR_KEYS){
+    const delta=(race.adjusts&&race.adjusts[k])||0;
+    const cls=delta>0?'boosted':delta<0?'penalized':'';
+    attrCards+=`<div class="modal-attr ${cls}"><span class="modal-attr-name">${ATTR_NAMES[k]}</span><span class="modal-attr-val">${final[k]}</span><span class="modal-attr-delta ${delta===0?'neutral':''}">${delta>0?'+'+delta:delta!==0?delta:'—'}</span></div>`;
+  }
+  for(const k of ATTR_KEYS){
+    const delta=(race.adjusts&&race.adjusts[k])||0;
+    const cls=delta>0?'up':delta<0?'down':'same';
+    const tag=delta>0?`<span class="compare-tag tag-up">+${delta}</span>`:delta<0?`<span class="compare-tag tag-down">${delta}</span>`:'';
+    compareRows+=`<div class="compare-row"><span class="compare-attr-name">${ATTR_NAMES[k]}</span><span class="compare-vals"><span class="compare-base">${attrs[k]}</span><span class="compare-arrow">→</span><span class="compare-final ${cls}">${final[k]}</span>${tag}</span></div>`;
+  }
+  document.getElementById('modalContent').innerHTML=`
+    <div class="modal-race-header"><span class="modal-race-icon">${race.icon}</span><div class="modal-race-name">${race.name}</div><div class="modal-race-adjust">${race.adjustText}</div></div>
+    <div class="modal-section-title">Atributos Finais como ${race.name}</div>
+    <div class="modal-attr-grid">${attrCards}</div>
+    <div class="modal-section-title">Comparação</div>
+    <div class="modal-compare">${compareRows}</div>`;
+  document.getElementById('modalOverlay').classList.add('open');
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+document.getElementById('modalClose').addEventListener('click',closeModal);
+document.getElementById('modalOverlay').addEventListener('click',e=>{if(e.target===document.getElementById('modalOverlay'))closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+// RACE PANEL
+function renderRacePanel(attrs,charName){
+  const panel=document.getElementById('racePanel'),grid=document.getElementById('raceGrid'),intro=document.getElementById('raceIntro');
+  panel.style.display='block';
+  const el=RACES.filter(r=>checkRace(r,attrs).eligible);
+  intro.textContent=`Com os atributos de ${charName}, as raças disponíveis são: ${el.map(r=>r.name).join(', ')||'nenhuma'}.`;
+  grid.innerHTML='';
+  for(const race of RACES){
+    const{eligible:ok,failures}=checkRace(race,attrs);
+    const isH=race.id==='humano';
+    const card=document.createElement('div');
+    card.className=`race-card ${ok?(isH?'human-card eligible':'eligible'):'ineligible'}`;
+    const rq=isH?`<div class="req-row"><span class="req-label" style="color:rgba(240,192,64,.6)">Sem restrições de atributo</span></div>`:ATTR_KEYS.filter(k=>!(race.reqs[k][0]===3&&race.reqs[k][1]===18)).map(k=>{const[mn,mx]=race.reqs[k],val=attrs[k],pass=val>=mn&&val<=mx;return`<div class="req-row"><span class="req-label">${ATTR_NAMES[k]}</span><span class="req-range ${pass?'req-ok':'req-fail'}">${mn}–${mx} (${val})</span></div>`;}).join('');
+    const fh=!ok&&failures.length?`<div class="fail-reason">✗ ${failures.map(f=>`${ATTR_NAMES[f.key]} (${f.val} < ${f.min})`).join(', ')}</div>`:'';
+    const hint=ok?`<div class="click-hint">🔍 Clique para ver atributos finais</div>`:'';
+    card.innerHTML=`<div class="race-name">${race.icon} ${race.name}<span class="race-badge ${ok?'badge-ok':'badge-no'}">${ok?'APTO':'INAPTO'}</span></div><div class="race-adjusts">${race.adjustText}</div>${rq}${fh}${hint}`;
+    if(ok)card.addEventListener('click',()=>openModal(race,attrs));
+    grid.appendChild(card);
+  }
+  panel.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+// LOG
+let freshId=null;
+function renderLog(entries){
+  const list=document.getElementById('logList');list.innerHTML='';
+  if(!entries||entries.length===0){list.innerHTML='<div class="empty-state">Os pergaminhos aguardam os primeiros heróis...</div>';return;}
+  for(const entry of entries){
+    const isFresh=entry.id===freshId;
+    const eligible=RACES.filter(r=>checkRace(r,entry.attrs).eligible);
+    const div=document.createElement('div');div.className=`log-entry ${isFresh?'fresh':''}`;
+    const attrHtml=ATTR_KEYS.map(k=>`<span class="log-attr"><span>${ATTR_NAMES[k].slice(0,3)}</span><span>${entry.attrs[k]}</span></span>`).join('');
+    div.innerHTML=`<button class="del-btn" onclick="excluirAventureiro('${entry.id}')" title="Excluir">✕</button><div class="log-header"><span class="log-char">⚔ ${esc(entry.charName||'Sem nome')}</span><span class="log-time">${fmtDT(entry.ts)}</span></div><div class="log-player">👤 Jogador: ${esc(entry.playerName||'?')}</div><div class="log-attrs">${attrHtml}</div><div class="log-races"><strong>Raças possíveis:</strong> ${eligible.map(r=>r.name).join(', ')||'Nenhuma'}</div>`;
+    list.appendChild(div);
+    if(isFresh)setTimeout(()=>div.classList.remove('fresh'),3000);
+  }
+}
+
+// FIRESTORE
+const q=query(rollsRef,orderBy('ts','desc'));
+onSnapshot(q,(snap)=>{setStatus('online');updateLastUpdate();renderLog(snap.docs.map(d=>({id:d.id,...d.data()})));},
+(err)=>{console.error(err);setStatus('offline');});
+
+// ROLL ATTRS
+document.getElementById('rollBtn').addEventListener('click',async()=>{
+  const pn=document.getElementById('playerName').value.trim();
+  const cn=document.getElementById('charName').value.trim();
+  if(!pn||!cn){alert('⚔️ Preencha o nome do jogador e do aventureiro!');return;}
+  const btn=document.getElementById('rollBtn');
+  btn.disabled=true;btn.classList.add('rolling');
+  for(const k of ATTR_KEYS){document.getElementById('val-'+k).textContent='?';document.getElementById('card-'+k).className='attr-card';document.getElementById('dice-'+k).textContent='';}
+  await new Promise(r=>setTimeout(r,50));
+  const rolls={},dd={};
+  for(const k of ATTR_KEYS){const r=roll3d6();rolls[k]=r.total;dd[k]=r.dice;}
+  for(let f=0;f<10;f++){for(const k of ATTR_KEYS)document.getElementById('val-'+k).textContent=Math.floor(Math.random()*16)+3;await new Promise(r=>setTimeout(r,45));}
+  for(const k of ATTR_KEYS){const el=document.getElementById('val-'+k);el.textContent=rolls[k];el.className='attr-val';document.getElementById('card-'+k).className='attr-card rolled';}
+  for(const k of ATTR_KEYS)document.getElementById('dice-'+k).textContent=`[${dd[k].join(' + ')}]`;
+  try{const ref=await addDoc(rollsRef,{playerName:pn,charName:cn,attrs:rolls,ts:Date.now()});freshId=ref.id;}
+  catch(e){alert('Erro: '+e.message);}
+  renderRacePanel(rolls,cn);
+  btn.classList.remove('rolling');btn.disabled=false;
+});
+
+// CLEAR ALL
+document.getElementById('clearBtn').addEventListener('click',async()=>{
+  const s=prompt('🔐 Senha do Mestre:');if(s===null)return;
+  if(s!=='LucasNoob'){alert('❌ Senha incorreta!');return;}
+  if(!confirm('Apagar TODA a crônica?'))return;
+  try{const sn=await getDocs(rollsRef);await Promise.all(sn.docs.map(d=>deleteDoc(doc(db,'rolls',d.id))));}
+  catch(e){alert('Erro: '+e.message);}
+});
+
+// ══════════════════════════════════════
+// INITIATIVE TRACKER
+// ══════════════════════════════════════
+
+let combatants = [];   // {id, name, type}
+let battleOrder = [];  // {id, name, type, roll, done}
+let currentRound = 1;
+let selectedType = 'player';
+
+window.selectType = (t) => {
+  selectedType = t;
+  document.getElementById('typePlayer').className = 'type-btn' + (t==='player'?' sel-player':'');
+  document.getElementById('typeEnemy').className  = 'type-btn' + (t==='enemy'?' sel-enemy':'');
+};
+
+window.addCombatant = () => {
+  const inp = document.getElementById('initName');
+  const name = inp.value.trim();
+  if(!name){ inp.focus(); return; }
+  const speed = Math.max(0, parseInt(document.getElementById('initSpeed').value)||0);
+  combatants.push({id: Date.now()+Math.random(), name, type: selectedType, speed});
+  inp.value = '';
+  document.getElementById('initSpeed').value = '';
+  inp.focus();
+  renderCombatantList();
+};
+
+// Allow Enter key to add
+document.getElementById('initName').addEventListener('keydown', e => {
+  if(e.key === 'Enter') window.addCombatant();
+});
+
+window.removeCombatant = (id) => {
+  combatants = combatants.filter(c => c.id !== id);
+  renderCombatantList();
+};
+
+function renderCombatantList() {
+  const list = document.getElementById('combatantList');
+  if(combatants.length === 0){
+    list.innerHTML = '<div class="no-combatants">Nenhum combatente adicionado ainda.</div>';
+    return;
+  }
+  list.innerHTML = combatants.map(c => `
+    <div class="combatant-chip type-${c.type}">
+      <span class="chip-icon">${c.type==='player'?'🛡':'💀'}</span>
+      <span class="chip-name">${esc(c.name)}</span>
+      <span class="chip-type ${c.type}">${c.type==='player'?'Herói':'Inimigo'}</span>
+      ${c.speed>0?`<span style="font-family:'Cinzel',serif;font-size:.65rem;color:var(--gold2);border:1px solid rgba(212,160,23,.3);padding:1px 5px;border-radius:1px;background:rgba(212,160,23,.06);">vel +${c.speed}</span>`:''}
+      <button class="chip-del" onclick="removeCombatant(${c.id})" title="Remover">✕</button>
+    </div>`).join('');
+}
+
+window.rollInitiative = () => {
+  if(combatants.length === 0){ alert('Adicione ao menos um combatente!'); return; }
+
+  // Roll d10 for each; total = d10 + weapon speed. Lower total goes first (AD&D 2e)
+  battleOrder = combatants.map(c => {
+    const roll = d10();
+    const speed = c.speed || 0;
+    return { ...c, roll, speed, total: roll + speed, done: false };
+  });
+
+  // Sort ascending (lowest total goes first)
+  battleOrder.sort((a,b) => a.total - b.total);
+
+  currentRound = 1;
+  document.getElementById('battlePanel').style.display = 'block';
+  document.getElementById('battlePanel').scrollIntoView({behavior:'smooth', block:'start'});
+  renderBattleOrder(true);
+};
+
+window.rerollRound = () => {
+  if(battleOrder.length === 0) return;
+  currentRound++;
+  battleOrder.forEach(c => {
+    c.roll = d10();
+    c.total = c.roll + (c.speed || 0);
+    c.done = false;
+  });
+  battleOrder.sort((a,b) => a.total - b.total);
+  renderBattleOrder(true);
+};
+
+window.resetTracker = () => {
+  if(!confirm('Reiniciar o tracker? Os combatentes serão mantidos.')) return;
+  battleOrder = [];
+  currentRound = 1;
+  document.getElementById('battlePanel').style.display = 'none';
+};
+
+// Mark combatant as having acted → moves to end of queue visually
+window.markActed = (id) => {
+  const c = battleOrder.find(x => x.id === id);
+  if(c) c.done = true;
+  renderBattleOrder(false);
+
+  // Check if all acted → auto next round prompt
+  if(battleOrder.every(x => x.done)){
+    setTimeout(()=>{
+      if(confirm(`Todos agiram! Iniciar Rodada ${currentRound+1}?`)){
+        window.rerollRound();
+      }
+    }, 400);
+  }
+};
+
+window.undoActed = (id) => {
+  const c = battleOrder.find(x => x.id === id);
+  if(c) c.done = false;
+  renderBattleOrder(false);
+};
+
+// Update weapon speed mid-combat (applies next round reroll)
+window.updateSpeed = (id, val) => {
+  const speed = Math.max(0, parseInt(val)||0);
+  const bc = battleOrder.find(x => x.id === id);
+  const cc = combatants.find(x => x.id === id);
+  if(bc){ bc.speed = speed; bc.total = bc.roll + speed; }
+  if(cc){ cc.speed = speed; }
+  // Re-sort and re-render immediately so order updates live
+  battleOrder.sort((a,b) => a.total - b.total);
+  renderBattleOrder(false);
+};
+
+window.removeFromBattle = (id) => {
+  battleOrder = battleOrder.filter(c => c.id !== id);
+  combatants  = combatants.filter(c => c.id !== id);
+  renderCombatantList();
+  if(battleOrder.length === 0){ document.getElementById('battlePanel').style.display='none'; return; }
+  renderBattleOrder(false);
+};
+
+function renderBattleOrder(animated) {
+  // Active = first not-done entry
+  const activeIdx = battleOrder.findIndex(c => !c.done);
+
+  // Round info
+  const done = battleOrder.filter(c => c.done).length;
+  const total = battleOrder.length;
+  document.getElementById('roundBadge').textContent = `Rodada ${currentRound}`;
+  document.getElementById('roundSub').textContent =
+    done === total
+      ? `✅ Todos agiram nesta rodada!`
+      : activeIdx >= 0
+        ? `Vez de: ${battleOrder[activeIdx].name} (${done}/${total} agiram)`
+        : '';
+
+  // Detect ties (based on total)
+  const rollCounts = {};
+  battleOrder.forEach(c => { rollCounts[c.total] = (rollCounts[c.total]||0)+1; });
+
+  const order = document.getElementById('initOrder');
+  order.innerHTML = '';
+
+  battleOrder.forEach((c, i) => {
+    const isActive = i === activeIdx;
+    const hasTie = rollCounts[c.total] > 1;
+
+    const row = document.createElement('div');
+    row.className = `init-row type-${c.type}${isActive?' active-turn':''}${c.done?' done-turn':''}`;
+
+    const actBtn = !c.done
+      ? `<button class="ia-btn act-btn" onclick="markActed(${c.id})">✔ Agiu</button>`
+      : `<button class="ia-btn undo-btn" onclick="undoActed(${c.id})">↩ Desfazer</button>`;
+
+    const tieBadge = hasTie ? `<span class="tie-badge">EMPATE</span>` : '';
+    const speedInfo = c.speed > 0
+      ? `<span style="font-size:.65rem;font-family:'Cinzel',serif;color:var(--gold2);opacity:.7;margin-left:.3rem;">(${c.roll}+${c.speed})</span>`
+      : '';
+
+    row.innerHTML = `
+      <span class="init-pos">${i+1}</span>
+      <div style="display:flex;flex-direction:column;align-items:center;min-width:52px;">
+        <span class="init-dice-val ${animated?'just-rolled':''}">${c.total}</span>
+        ${c.speed>0?`<span style="font-size:.6rem;font-family:'Cinzel',serif;color:rgba(194,169,106,.4);margin-top:1px;">${c.roll}+${c.speed}</span>`:''}
+      </div>
+      <div class="init-info">
+        <span class="init-name">${esc(c.name)}${tieBadge}</span>
+        <span class="init-type-label">${c.type==='player'?'🛡 Herói':'💀 Inimigo'}</span>
+      </div>
+      <div class="init-actions" style="gap:.25rem;flex-wrap:wrap;justify-content:flex-end;">
+        <label style="display:flex;align-items:center;gap:.25rem;font-family:'Cinzel',serif;font-size:.65rem;color:rgba(194,169,106,.5);white-space:nowrap;">
+          vel
+          <input type="number" min="0" max="20" value="${c.speed||0}"
+            style="width:38px;background:rgba(0,0,0,.4);border:1px solid var(--border);border-radius:2px;color:var(--gold2);font-family:'Cinzel',serif;font-size:.75rem;text-align:center;padding:2px 3px;outline:none;"
+            onchange="updateSpeed(${c.id}, this.value)"
+            title="Velocidade da arma — altere e rola nova rodada para aplicar"/>
+        </label>
+        ${actBtn}
+        <button class="ia-btn rm-btn" onclick="removeFromBattle(${c.id})" title="Remover do combate">✕</button>
+      </div>`;
+
+    order.appendChild(row);
+  });
+
+  // Divider if any done
+  if(done > 0 && done < total){
+    const pendingIdx = battleOrder.findIndex(c => !c.done);
+    const doneRowIdx = battleOrder.filter(c => !c.done).length;
+    if(doneRowIdx < total){
+      const divider = document.createElement('div');
+      divider.className = 'round-divider';
+      divider.textContent = '— já agiram —';
+      order.appendChild(divider);
+    }
+  }
+}
+
+</script>
+</body>
+</html>
